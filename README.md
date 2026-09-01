@@ -12,7 +12,7 @@
 
 ---
 
-![Your Linux Guide — homepage demo](./screenshots/screenshot.gif)
+![Demo](screeshots/screeshot.gif)
 
 ## What is this?
 
