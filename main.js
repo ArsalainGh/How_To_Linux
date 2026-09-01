@@ -33,6 +33,12 @@
     { id: "cheat-sheet",         num: "10", title: "Cheat Sheet",           href: "cheat-sheet.html",         icon: "bi-journal-text",   keywords: "reference commands quick print shortcuts summary table" }
   ];
 
+  /* Extra pages that should show up in the navbar search but are NOT part of
+     the 10-topic learning path (no progress tracking, no homepage card). */
+  const EXTRAS = [
+    { id: "practice", num: "&gt;_", title: "Practice Terminal", href: "practice.html", icon: "bi-play-circle", keywords: "practice terminal live sandbox webterm try commands online browser real interactive playground test" }
+  ];
+
   /* ----------------------------------------------------------------------
      Theme switcher (dark ↔ light)
      A tiny inline <script> in each page's <head> applies the saved theme
@@ -226,7 +232,7 @@
   function matchTopics(query) {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    return TOPICS.filter(function (t) {
+    return TOPICS.concat(EXTRAS).filter(function (t) {
       return (t.title + " " + t.keywords).toLowerCase().indexOf(q) !== -1;
     });
   }
@@ -513,6 +519,161 @@
     });
 
     renderQuestion();
+  }
+
+  /* ----------------------------------------------------------------------
+     12. Real Linux terminal, embedded in-panel (practice.html)
+     sandbox.bio's official /embed endpoint in an iframe INSIDE our panel —
+     same URL params and iframe attributes as their own embed script
+     (https://sandbox.bio/training/embed). Their postMessage protocol:
+       iframe → parent : { source:"sandbox.bio", type:"ready" }
+       parent → iframe : { source:"sandbox.bio", type:"run", command }
+     Hard-won lessons encoded below:
+     · The iframe must stay VISIBLE while loading (a display:none +
+       loading="lazy" iframe is never fetched). Overlays go on top instead.
+     · The embed page draws its own 40px header bar; #sbFrame is positioned
+       40px above the panel (styles.css) to clip it out of sight, and the
+       height passed as `h` is compensated by the same 40px.
+     ---------------------------------------------------------------------- */
+  const SB_BAR = 40; // height of the embed page's internal header bar (px)
+  const sbFrame = document.getElementById("sbFrame");
+  if (sbFrame) {
+    const SB_ORIGIN = "https://sandbox.bio";
+    const sbEmbed   = document.getElementById("sbEmbed");
+    const sbBody    = document.getElementById("sbBody");
+    const sbPh      = document.getElementById("sbPlaceholder");
+    const sbLoading = document.getElementById("sbLoading");
+    const sbLaunch  = document.getElementById("sbLaunch");
+    const sbChip    = document.getElementById("sbChip");
+    const sbReset   = document.getElementById("sbReset");
+    const sbFs      = document.getElementById("sbFullscreen");
+    const runBtns   = document.querySelectorAll("[data-run]");
+    let sbReady = false;
+    let sbLaunched = false;
+    const sbQueue = [];
+
+    function chip(icon, label, ready) {
+      if (!sbChip) return;
+      sbChip.innerHTML = '<i class="bi ' + icon + '"></i><span>' + label + "</span>";
+      sbChip.classList.toggle("is-ready", !!ready);
+    }
+
+    function sbSend(command) {
+      if (sbReady && sbFrame.contentWindow) {
+        sbFrame.contentWindow.postMessage({ source: "sandbox.bio", type: "run", command: command }, SB_ORIGIN);
+      } else {
+        sbQueue.push(command);
+      }
+    }
+
+    function sbLoad() {
+      if (sbLaunched) return;
+      sbLaunched = true;
+      sbPh.classList.add("d-none");
+      sbLoading.classList.remove("d-none");
+      chip("bi-hourglass-split", "booting…", false);
+      /* `h` mirrors their embed.js height param; +SB_BAR compensates for the
+         clipped internal header so the terminal fills the visible panel. */
+      const h = Math.max(300, (sbBody.clientHeight || 560)) + SB_BAR;
+      sbFrame.src = sbFrame.dataset.src + "&h=" + h;
+      setTimeout(function () {
+        if (!sbReady) {
+          chip("bi-wifi-off", "offline", false);
+          sbLoading.innerHTML = '<i class="bi bi-wifi-off" style="font-size:1.4rem"></i>' +
+            '<span>The real terminal couldn\u2019t load \u2014 no worries:<br>' +
+            'use the <b>built-in terminal</b> below instead (it works offline).</span>';
+          const d = document.getElementById("builtinDetails");
+          if (d) d.open = true;
+        }
+      }, 40000);
+    }
+
+    /* The shell's "ready" handshake — same message their embed.js listens for */
+    window.addEventListener("message", function (e) {
+      if (e.origin !== SB_ORIGIN) return;
+      if (sbFrame.contentWindow && e.source && e.source !== sbFrame.contentWindow) return;
+      const msg = e.data;
+      if (!msg || msg.source !== "sandbox.bio") return;
+      if (msg.type === "ready") {
+        sbReady = true;
+        sbLoading.classList.add("d-none");
+        chip("bi-check-circle", "ready", true);
+        if (sbReset) sbReset.disabled = false;
+        if (sbFs) sbFs.disabled = false;
+        while (sbQueue.length) sbSend(sbQueue.shift());
+      }
+    });
+
+    if (sbLaunch) sbLaunch.addEventListener("click", sbLoad);
+
+    /* Reset = reload the frame → a completely fresh Linux system */
+    if (sbReset) sbReset.addEventListener("click", function () {
+      sbReady = false;
+      chip("bi-hourglass-split", "booting…", false);
+      sbLoading.classList.remove("d-none");
+      sbLoading.innerHTML = '<div class="spinner-border" role="status" aria-hidden="true"></div><span>Rebooting a fresh system…</span>';
+      sbFrame.src = sbFrame.src; // re-assigning src reloads a cross-origin iframe
+    });
+
+    /* Run buttons: extract clean commands (no prompts, no comments — same
+       rules as Copy) and type them into the terminal, launching if needed. */
+    runBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const block = btn.closest(".terminal-block");
+        const code = block && block.querySelector("pre code");
+        if (!code) return;
+        const cmdLines = code.querySelectorAll(".cmdline");
+        const command = Array.prototype.map.call(cmdLines, function (line) {
+          const clone = line.cloneNode(true);
+          clone.querySelectorAll(".prompt, .cursor, .comment").forEach(function (n) { n.remove(); });
+          return clone.textContent.trim();
+        }).filter(Boolean).join("\n");
+        if (!command) return;
+
+        if (!sbLaunched) sbLoad();
+        sbSend(command);
+        sbEmbed.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="bi bi-check2"></i><span>' + (sbReady ? "Sent" : "Queued") + "</span>";
+        setTimeout(function () { btn.innerHTML = original; }, 1400);
+      });
+    });
+
+    /* Fullscreen (native API + CSS fallback) */
+    function sbSyncFs() {
+      const active = document.fullscreenElement === sbEmbed || sbEmbed.classList.contains("is-fs-fallback");
+      const icon = sbFs && sbFs.querySelector("i");
+      if (icon) icon.className = "bi " + (active ? "bi-fullscreen-exit" : "bi-arrows-fullscreen");
+      const label = sbFs && sbFs.querySelector("span");
+      if (label) label.textContent = active ? "Exit" : "Fullscreen";
+    }
+    function sbFsOff() {
+      sbEmbed.classList.remove("is-fs-fallback");
+      document.documentElement.classList.remove("ylg-noscroll");
+      sbSyncFs();
+    }
+    if (sbFs) {
+      sbFs.addEventListener("click", function () {
+        if (sbEmbed.classList.contains("is-fs-fallback")) return sbFsOff();
+        if (document.fullscreenElement === sbEmbed) return document.exitFullscreen();
+        if (sbEmbed.requestFullscreen) {
+          sbEmbed.requestFullscreen().catch(function () {
+            sbEmbed.classList.add("is-fs-fallback");
+            document.documentElement.classList.add("ylg-noscroll");
+            sbSyncFs();
+          });
+        } else {
+          sbEmbed.classList.add("is-fs-fallback");
+          document.documentElement.classList.add("ylg-noscroll");
+          sbSyncFs();
+        }
+      });
+      document.addEventListener("fullscreenchange", sbSyncFs);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && sbEmbed.classList.contains("is-fs-fallback")) sbFsOff();
+      });
+    }
   }
 
   /* Fill every ".js-year" element with the current year (footer) */

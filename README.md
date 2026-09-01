@@ -19,7 +19,8 @@
 A dark, terminal-themed learning site that takes someone who has never touched Linux
 from *"what even is it?"* to installing it confidently on their own machine. Ten guided
 topics, dozens of copy-pasteable terminal examples, an interactive distro-finder quiz,
-and a print-friendly cheat sheet — all written in plain, jargon-free language.
+a live in-browser practice terminal, and a print-friendly cheat sheet — all written in
+plain, jargon-free language.
 
 ## Features
 
@@ -29,6 +30,7 @@ and a print-friendly cheat sheet — all written in plain, jargon-free language.
 - **Terminal-styled code blocks** — dark background, green monospace text, macOS-style window chrome, and a one-click **copy button** (copies only the commands, never prompts or comments)
 - **Navbar topic search** — instant dropdown quick-jump on every page; on the homepage it also live-filters the topic card grid
 - **Interactive quiz** — "Which distro is for you?" written in vanilla JS (4 questions, weighted scoring, local result)
+- **Live practice terminal** — a working Linux terminal built into the site itself (`terminal.js`, pure vanilla JS, zero dependencies): a virtual file system, ~30 faithful commands, pipes (`|`), redirection (`>` / `>>`), chaining (`&&` / `;`), Tab completion, ↑/↓ history, Reset and Fullscreen controls, plus **Run buttons** on every example that type the commands into the terminal for you. No iframes, no third parties — it even works offline and from `file://`
 - **Visual diagrams in pure HTML/CSS** — distro family tree, file-system directory tree, rwx permission breakdown
 - **Print-friendly cheat sheet** — dedicated `@media print` stylesheet plus a print button
 - **Fully responsive** — Bootstrap 5 grid, collapsible hamburger navbar, works on mobile, tablet and desktop
@@ -63,6 +65,8 @@ your-linux-guide/
 ├── essential-concepts.html     # 08 · Kernel, X11 vs Wayland, GRUB, systemd, repos
 ├── getting-started.html        # 09 · Live USB, install guide, distro quiz
 ├── cheat-sheet.html            # 10 · Print-friendly quick reference
+├── practice.html               # ★  · Live practice terminal (in-page sandbox)
+├── terminal.js                 # The terminal engine: virtual FS + command interpreter
 ├── styles.css                  # Custom dark theme (overrides Bootstrap)
 ├── main.js                     # All interactivity (vanilla JS, commented)
 └── README.md
