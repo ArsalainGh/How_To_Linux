@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="What is Linux? A beginner-friendly explanation of the free operating system, its history, and how it compares to Windows and macOS.">
+  <title>What Is Linux? — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared across all pages) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">What Is Linux?</li>
+        </ol>
+      </nav>
+
+      <!-- Page header -->
+      <header class="mb-5 reveal">
+        <span class="kicker">topics/01-what-is-linux</span>
+        <h1 class="display-5 fw-bold">What Is <span class="gradient-text">Linux</span>?</h1>
+        <p class="section-lead mt-2">Let's start from the absolute beginning. By the end of this page you'll know
+        what Linux is, where it came from, and why millions of people choose it over Windows or macOS.</p>
+      </header>
+
+      <!-- ===== Section: the short answer ===== -->
+      <section class="section pt-0" aria-labelledby="shortAnswer">
+        <h2 class="section-title" id="shortAnswer">The short answer</h2>
+        <p><b>Linux is an operating system</b> — the master software that makes your computer usable, just like Windows or macOS.
+        It manages your hardware, runs your programs, and connects everything together. The big difference:
+        Linux is <b>free and open source</b>, meaning anyone can download it, use it, study its code, and share it. Forever.</p>
+
+        <p>Technically speaking, &ldquo;Linux&rdquo; is the name of the <b>kernel</b> — the core that talks directly to your
+        hardware. Everything else (your desktop, apps, package manager) is built around that kernel. You'll sometimes see the
+        full system called <b>GNU/Linux</b>, because many of the surrounding tools come from the GNU project. In everyday
+        conversation, everyone just says &ldquo;Linux&rdquo;.</p>
+
+        <div class="callout"><i class="bi bi-lightbulb"></i>
+          <span><b>Analogy:</b> if your computer is a car, the kernel is the engine, and the operating system is the whole
+          car — steering wheel, seats, dashboard and all. Linux (the kernel) plus GNU tools and a desktop make the complete ride.</span>
+        </div>
+
+        <!-- Fun terminal: ask the system its name/kernel version -->
+        <div class="terminal-block">
+          <div class="terminal-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="terminal-title">try it: the system tells you its name</span>
+            <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+          </div>
+          <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>uname -a</span><span class="output">Linux pc 6.8.0-45-generic #45-Ubuntu SMP x86_64 GNU/Linux</span></code></pre>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Section: history timeline ===== -->
+      <section class="section" aria-labelledby="history">
+        <span class="kicker">story/1991</span>
+        <h2 class="section-title" id="history">A very short history</h2>
+        <p class="section-lead mb-4">Linux didn't appear from nowhere — it stands on decades of shared, open code.</p>
+
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <span class="timeline-year">1969</span>
+            <h5>UNIX is born</h5>
+            <p>At Bell Labs, Ken Thompson and Dennis Ritchie create UNIX, the ancestor of nearly every modern operating system.</p>
+          </div>
+          <div class="timeline-item purple-dot reveal">
+            <span class="timeline-year">1983</span>
+            <h5>The GNU project</h5>
+            <p>Richard Stallman launches GNU to build a completely free UNIX-like system — every tool except one crucial piece: a free kernel.</p>
+          </div>
+          <div class="timeline-item reveal">
+            <span class="timeline-year">1991</span>
+            <h5>Linus Torvalds writes a kernel</h5>
+            <p>A 21-year-old Finnish student posts his hobby kernel online: &ldquo;just a hobby, won't be big and professional.&rdquo; It became Linux.</p>
+          </div>
+          <div class="timeline-item purple-dot reveal">
+            <span class="timeline-year">Today</span>
+            <h5>Linux runs everything</h5>
+            <p>All of the world's fastest supercomputers, most web servers, every Android phone, smart TVs, cars, routers — and millions of desktops.</p>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Section: comparison table ===== -->
+      <section class="section" aria-labelledby="compare">
+        <span class="kicker">compare/os</span>
+        <h2 class="section-title" id="compare">Linux vs Windows vs macOS</h2>
+        <p class="section-lead mb-4">No operating system is &ldquo;best&rdquo; — they simply make different trade-offs.</p>
+
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead>
+                <tr><th style="width:24%"></th><th>Linux</th><th>Windows</th><th>macOS</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-semibold">Price</td>
+                  <td><span class="flag-chip green">Free</span></td>
+                  <td class="text-muted-custom">Paid license</td>
+                  <td class="text-muted-custom">Comes with a Mac</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Source code</td>
+                  <td>Open — anyone can read it</td>
+                  <td class="text-muted-custom">Closed</td>
+                  <td class="text-muted-custom">Mostly closed</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Customisation</td>
+                  <td>Change literally everything</td>
+                  <td class="text-muted-custom">Limited</td>
+                  <td class="text-muted-custom">Limited</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Viruses &amp; malware</td>
+                  <td>Rare target, strong permissions</td>
+                  <td class="text-muted-custom">Biggest target</td>
+                  <td class="text-muted-custom">Rare, but exists</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Runs on</td>
+                  <td>Almost any hardware, old or new</td>
+                  <td class="text-muted-custom">Most PCs</td>
+                  <td class="text-muted-custom">Apple hardware only</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Best known for</td>
+                  <td>Servers, development, privacy, learning</td>
+                  <td class="text-muted-custom">Gaming, office software</td>
+                  <td class="text-muted-custom">Creative work, polish</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="callout purple"><i class="bi bi-joystick"></i>
+          <span><b>One honest caveat:</b> anti-cheat in some competitive games and a few commercial apps (Adobe, MS Office
+          desktop versions) still don't run natively on Linux. Browser-based versions and great open-source alternatives
+          usually fill the gap.</span>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Section: why use it ===== -->
+      <section class="section" aria-labelledby="why">
+        <span class="kicker">answer/why</span>
+        <h2 class="section-title" id="why">So… why do people love it?</h2>
+        <div class="row g-4 mt-1">
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-cash-coin"></i></div>
+                <h3 class="h5">It's free, honestly</h3>
+                <p class="text-muted-custom small mb-0">Not &ldquo;free trial&rdquo; free — free as in freedom. No ads, no telemetry-by-default, no forced upgrades.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon purple"><i class="bi bi-shield-lock"></i></div>
+                <h3 class="h5">Privacy &amp; security</h3>
+                <p class="text-muted-custom small mb-0">You control what runs on your machine — and thousands of eyes worldwide audit the code.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal d2">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-palette2"></i></div>
+                <h3 class="h5">Total control</h3>
+                <p class="text-muted-custom small mb-0">Don't like the desktop? Swap it. Want automation everywhere? Script it. Your computer, your rules.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon amber"><i class="bi bi-server"></i></div>
+                <h3 class="h5">Career superpower</h3>
+                <p class="text-muted-custom small mb-0">DevOps, cloud, cybersecurity, backend dev — nearly all of it runs on Linux servers.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-people"></i></div>
+                <h3 class="h5">A huge community</h3>
+                <p class="text-muted-custom small mb-0">Wikis, forums, and millions of users worldwide. Almost every problem you'll hit is already solved online.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 reveal d2">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon purple"><i class="bi bi-speedometer2"></i></div>
+                <h3 class="h5">Fast &amp; efficient</h3>
+                <p class="text-muted-custom small mb-0">Linux can be feather-light or feature-rich. It famously breathes new life into old hardware.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Finished this topic?</h5>
+          <p>Saved locally in your browser — no account needed.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="what-is-linux"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="index.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Home</span></span></a>
+        <a class="pager-link next" href="distributions.html"><span><span class="dir">next topic</span><span class="lbl">Linux Distributions <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

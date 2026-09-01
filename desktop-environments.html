@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GNOME, KDE Plasma, XFCE, Cinnamon — what is a desktop environment, what is a window manager, and which should you choose?">
+  <title>Desktop Environments — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Desktop Environments</li>
+        </ol>
+      </nav>
+
+      <header class="mb-5 reveal">
+        <span class="kicker">topics/03-desktop-environments</span>
+        <h1 class="display-5 fw-bold">Desktop <span class="gradient-text">Environments</span></h1>
+        <p class="section-lead mt-2">On Linux, the way your desktop looks and behaves is just another piece of
+        software you can swap. Here are the big names — and how they differ.</p>
+      </header>
+
+      <!-- ===== What is a DE ===== -->
+      <section class="section pt-0" aria-labelledby="what">
+        <h2 class="section-title" id="what">What is a desktop environment (DE)?</h2>
+        <p>A <b>desktop environment</b> is the complete visual layer of your system: the wallpaper, panels, menus, window
+        borders and buttons, system settings app, file manager, and all the small built-in apps (calculator, text editor,
+        screenshot tool…). It's everything you click on that isn't your actual work.</p>
+
+        <div class="callout"><i class="bi bi-house"></i>
+          <span><b>Analogy:</b> if the Linux kernel is a house's plumbing and wiring, the desktop environment is the
+          interior design — wallpaper, furniture, and light switches. Two houses with the same pipes can look completely
+          different inside.</span>
+        </div>
+
+        <div class="callout purple"><i class="bi bi-arrow-left-right"></i>
+          <span><b>Key freedom:</b> DEs are interchangeable software. You can install KDE on Ubuntu, try GNOME on Fedora,
+          and switch at the login screen. Many distros even ship official editions (&ldquo;flavors&rdquo; or
+          &ldquo;spins&rdquo;) per DE — like Ubuntu (GNOME), Kubuntu (KDE) and Xubuntu (XFCE).</span>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== The big four DEs ===== -->
+      <section class="section" aria-labelledby="bigFour">
+        <span class="kicker">de/the-big-four</span>
+        <h2 class="section-title" id="bigFour">The big four</h2>
+        <p class="section-lead mb-4">Each card shows the vibe, plus who it's great for.</p>
+
+        <div class="row g-4">
+          <!-- GNOME -->
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="info-icon mb-0"><i class="bi bi-circle-square"></i></div>
+                  <div>
+                    <h3 class="h5 mb-0">GNOME</h3>
+                    <span class="flag-chip">Default on Ubuntu &amp; Fedora</span>
+                  </div>
+                </div>
+                <p class="text-muted-custom small">Clean, modern and minimal — a bit like a tablet workflow on a desktop.
+                Activities overview, big touch-friendly elements, and a philosophy of &ldquo;get out of your way&rdquo;.
+                Extensions add tweaks on top.</p>
+                <p class="small mb-0"><b>Great for:</b> people who want a beautiful, opinionated, distraction-free desktop that just works.</p>
+              </div>
+            </div>
+          </div>
+          <!-- KDE Plasma -->
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="info-icon purple mb-0"><i class="bi bi-stars"></i></div>
+                  <div>
+                    <h3 class="h5 mb-0">KDE Plasma</h3>
+                    <span class="flag-chip">Default on Kubuntu &amp; Steam Deck</span>
+                  </div>
+                </div>
+                <p class="text-muted-custom small">The customisation champion: widgets, effects, themes, layouts — if you can
+                imagine it, Plasma can probably do it, all from a friendly settings app. Familiar taskbar/start-menu layout
+                by default.</p>
+                <p class="small mb-0"><b>Great for:</b> tinkerers and anyone who wants traditional Windows-style layout with unlimited tweaks.</p>
+              </div>
+            </div>
+          </div>
+          <!-- XFCE -->
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="info-icon amber mb-0"><i class="bi bi-feather"></i></div>
+                  <div>
+                    <h3 class="h5 mb-0">XFCE</h3>
+                    <span class="flag-chip">Default on Xubuntu &amp; Manjaro XFCE</span>
+                  </div>
+                </div>
+                <p class="text-muted-custom small">The featherweight classic. Looks like a traditional 2000s desktop — taskbar,
+                menu, icons — and sips RAM. Changes slowly and breaks never. Perfect for breathing life into old laptops.</p>
+                <p class="small mb-0"><b>Great for:</b> older or low-spec hardware, and people who value stability over flash.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Cinnamon -->
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="info-icon mb-0"><i class="bi bi-cup-hot"></i></div>
+                  <div>
+                    <h3 class="h5 mb-0">Cinnamon</h3>
+                    <span class="flag-chip">Default on Linux Mint</span>
+                  </div>
+                </div>
+                <p class="text-muted-custom small">Built by the Linux Mint team. Familiar Windows-like layout (bottom taskbar,
+                start-style menu, system tray) but modern, smooth and gently customizable. Zero culture shock for newcomers.</p>
+                <p class="small mb-0"><b>Great for:</b> Windows migrants who want to feel at home on day one.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Window managers ===== -->
+      <section class="section" aria-labelledby="wm">
+        <span class="kicker">de/window-managers</span>
+        <h2 class="section-title" id="wm">…and what is a window manager?</h2>
+        <p>A <b>window manager (WM)</b> does much less than a full DE: it only draws and arranges application windows —
+        no panels, no settings app, no bundled file manager or wallpaper tool. You add whatever else you need yourself.</p>
+        <p>Famous WMs include <code>i3</code> and <code>Sway</code> (keyboard-driven <b>tiling</b> WMs that snap windows
+        into automatic grids), <code>Hyprland</code> (tiling, but with gorgeous animations), and <code>Openbox</code>
+        (a classic minimal floating WM). A bare WM session can use under 200&nbsp;MB of RAM — a full DE often uses 1&nbsp;GB+.</p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== DE vs WM table ===== -->
+      <section class="section" aria-labelledby="vs">
+        <span class="kicker">compare/de-vs-wm</span>
+        <h2 class="section-title" id="vs">DE vs WM — at a glance</h2>
+        <div class="table-card reveal mt-3">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:26%"></th><th>Desktop Environment</th><th>Window Manager</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="fw-semibold">What you get</td>
+                  <td>Full experience: panel, menus, settings, apps</td>
+                  <td class="text-muted-custom">Just window drawing/arranging</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Setup effort</td>
+                  <td>Zero — works out of the box</td>
+                  <td class="text-muted-custom">You assemble everything yourself</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Control style</td>
+                  <td>Mostly mouse &amp; menus</td>
+                  <td class="text-muted-custom">Mostly keyboard (tiling WMs)</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Resource usage</td>
+                  <td>Moderate to heavy</td>
+                  <td class="text-muted-custom">Extremely light</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Examples</td>
+                  <td>GNOME · KDE Plasma · XFCE · Cinnamon</td>
+                  <td class="text-muted-custom">i3 · Sway · Hyprland · Openbox</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Recommended for day one</td>
+                  <td><span class="flag-chip green">Yes — absolutely</span></td>
+                  <td class="text-muted-custom">Later, once you're comfortable</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="callout"><i class="bi bi-lightbulb"></i>
+          <span><b>Beginner rule of thumb:</b> start with whatever DE your distro ships by default. After a few weeks,
+          experiment — trying a new DE is free, safe and takes minutes.</span>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Finished this topic?</h5>
+          <p>Saved locally in your browser — no account needed.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="desktop-environments"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="distributions.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Linux Distributions</span></span></a>
+        <a class="pager-link next" href="terminal-and-shell.html"><span><span class="dir">next topic</span><span class="lbl">Terminal &amp; Shell <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
