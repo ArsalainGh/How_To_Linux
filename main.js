@@ -515,6 +515,32 @@
     renderQuestion();
   }
 
+  /* ----------------------------------------------------------------------
+     12. Resource preview images — graceful fallback
+     If a book-cover or channel-avatar service is unreachable, quietly swap
+     the broken image for a theme-matched SVG with the item's initials.
+     (Captured at window level because image errors don't bubble.)
+     ---------------------------------------------------------------------- */
+  window.addEventListener("error", function (e) {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement) || !img.classList.contains("resource-img")) return;
+    if (img.dataset.fbApplied) return; // guard against an infinite loop
+    img.dataset.fbApplied = "1";
+
+    const initials = img.dataset.fallback || "?";
+    const green = img.dataset.tone === "green";
+    const ink = green ? "#4ade80" : "#a78bfa";
+    const wash = green ? "rgba(74,222,128,0.10)" : "rgba(167,139,250,0.10)";
+    const svg =
+      "<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>" +
+      "<rect width='100%' height='100%' fill='#161b22'/>" +
+      "<rect width='100%' height='100%' fill='" + wash + "'/>" +
+      "<text x='50%' y='54%' font-family='monospace' font-size='42' font-weight='700' fill='" + ink +
+      "' text-anchor='middle' dominant-baseline='middle'>" + initials + "</text></svg>";
+
+    img.src = "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  }, true);
+
   /* Fill every ".js-year" element with the current year (footer) */
   document.querySelectorAll(".js-year").forEach(function (el) {
     el.textContent = new Date().getFullYear();
