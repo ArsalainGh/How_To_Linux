@@ -12,6 +12,8 @@
 
 ---
 
+![Your Linux Guide — homepage demo](screenshots/screenshot.gif)
+
 ## What is this?
 
 A dark, terminal-themed learning site that takes someone who has never touched Linux
