@@ -329,6 +329,9 @@ body.page-leave { opacity: 0; }
 @keyframes blink { 50% { opacity: 0; } }
 
 /* ---------- 6. Topic & info cards ---------- */
+.topic-card {
+    padding: 30px;
+}
 .topic-card, .info-card {
   background: var(--ylg-card);
   border: 1px solid var(--ylg-border);
