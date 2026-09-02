@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Linux cheat sheet: every essential command on one print-friendly page — navigation, files, search, permissions, system info, plus a package manager comparison table.">
+  <title>Cheat Sheet — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top no-print">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Cheat Sheet</li>
+        </ol>
+      </nav>
+
+      <header class="mb-4 reveal">
+        <span class="kicker">topics/10-cheat-sheet</span>
+        <h1 class="display-5 fw-bold">Cheat <span class="gradient-text">Sheet</span></h1>
+        <p class="section-lead mt-2">Every essential command, one page. Bookmark it, or print it and pin it above your desk.</p>
+        <!-- Print uses the @media print styles in styles.css -->
+        <button class="btn-ylg btn mt-2 no-print" onclick="window.print()"><i class="bi bi-printer"></i> Print this cheat sheet</button>
+      </header>
+
+      <!-- ===== Navigation & files ===== -->
+      <section class="section pt-1" aria-labelledby="nav">
+        <h2 class="section-title h3" id="nav"><i class="bi bi-folder2-open me-2 gradient-text"></i>Navigation &amp; files</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:38%">Command</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>pwd</code></td><td>Show the folder you're currently in</td></tr>
+                <tr><td><code>ls</code> / <code>ls -la</code></td><td>List files · detailed list incl. hidden ones</td></tr>
+                <tr><td><code>cd folder</code> / <code>cd ..</code> / <code>cd ~</code></td><td>Enter folder · go up one level · go home</td></tr>
+                <tr><td><code>mkdir -p a/b</code></td><td>Create folder(s), parents included</td></tr>
+                <tr><td><code>rmdir folder</code></td><td>Remove an <em>empty</em> folder</td></tr>
+                <tr><td><code>cp a b</code> / <code>cp -r dir dst</code></td><td>Copy a file · copy a folder recursively</td></tr>
+                <tr><td><code>mv a b</code></td><td>Move or rename files/folders</td></tr>
+                <tr><td><code>rm file</code> / <code>rm -r dir</code></td><td>Delete a file · delete a folder (no trash!)</td></tr>
+                <tr><td><code>touch file</code></td><td>Create an empty file (or update its timestamp)</td></tr>
+                <tr><td><code>cat file</code> / <code>less file</code></td><td>Print whole file · scroll through it (<code>q</code> quits)</td></tr>
+                <tr><td><code>head file</code> / <code>tail -f log</code></td><td>First 10 lines · last 10 lines, live-following</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Search & help ===== -->
+      <section class="section" aria-labelledby="search">
+        <h2 class="section-title h3" id="search"><i class="bi bi-search me-2 gradient-text"></i>Search &amp; help</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:38%">Command</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>man ls</code></td><td>Full manual page for a command</td></tr>
+                <tr><td><code>ls --help</code></td><td>Quick built-in summary</td></tr>
+                <tr><td><code>grep -i "error" file</code></td><td>Find text in a file, ignoring case</td></tr>
+                <tr><td><code>grep -r "todo" ~/code</code></td><td>Search text in every file of a folder</td></tr>
+                <tr><td><code>find ~ -name "*.pdf"</code></td><td>Find files by name pattern</td></tr>
+                <tr><td><code>which python3</code></td><td>Where a command's program lives</td></tr>
+                <tr><td><code>history</code></td><td>Your recently typed commands</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== System info ===== -->
+      <section class="section" aria-labelledby="sysinfo">
+        <h2 class="section-title h3" id="sysinfo"><i class="bi bi-cpu me-2 gradient-text"></i>System info</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:38%">Command</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>uname -r</code> / <code>uname -a</code></td><td>Kernel version · full system info</td></tr>
+                <tr><td><code>df -h</code></td><td>Free disk space, human-readable</td></tr>
+                <tr><td><code>du -sh folder</code></td><td>Total size of a folder</td></tr>
+                <tr><td><code>free -h</code></td><td>RAM usage</td></tr>
+                <tr><td><code>top</code> / <code>htop</code></td><td>Live process list (<code>q</code> quits)</td></tr>
+                <tr><td><code>whoami</code> / <code>who</code></td><td>Your username · who's logged in</td></tr>
+                <tr><td><code>uptime</code></td><td>How long since last reboot</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Permissions & sudo ===== -->
+      <section class="section" aria-labelledby="perms">
+        <h2 class="section-title h3" id="perms"><i class="bi bi-shield-lock me-2 gradient-text"></i>Permissions &amp; admin</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:38%">Command</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>sudo cmd</code></td><td>Run one command as root (asks your password)</td></tr>
+                <tr><td><code>sudo !!</code></td><td>Re-run the previous command, but with sudo</td></tr>
+                <tr><td><code>chmod +x script.sh</code></td><td>Make a script executable</td></tr>
+                <tr><td><code>chmod 644 file</code></td><td>Owner: read+write · everyone else: read</td></tr>
+                <tr><td><code>chmod 600 key</code></td><td>Owner-only access (SSH keys, secrets)</td></tr>
+                <tr><td><code>chown alex file</code></td><td>Change a file's owner</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="callout warning no-print"><i class="bi bi-exclamation-triangle"></i>
+          <span>Remember the permission math: <b>r=4, w=2, x=1</b>. So 7 = rwx, 6 = rw-, 5 = r-x, 4 = r--.</span>
+        </div>
+      </section>
+
+      <!-- ===== Package managers comparison ===== -->
+      <section class="section" aria-labelledby="pm">
+        <h2 class="section-title h3" id="pm"><i class="bi bi-box-seam me-2 gradient-text"></i>Package managers compared</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead>
+                <tr><th>Manager</th><th>Family</th><th>Install</th><th>Remove</th><th>Update everything</th><th>Search</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>apt</code></td>
+                  <td>Debian · Ubuntu · Mint</td>
+                  <td><code>sudo apt install pkg</code></td>
+                  <td><code>sudo apt remove pkg</code></td>
+                  <td><code>sudo apt update &amp;&amp; sudo apt upgrade</code></td>
+                  <td><code>apt search x</code></td>
+                </tr>
+                <tr>
+                  <td><code>pacman</code></td>
+                  <td>Arch · Manjaro</td>
+                  <td><code>sudo pacman -S pkg</code></td>
+                  <td><code>sudo pacman -Rns pkg</code></td>
+                  <td><code>sudo pacman -Syu</code></td>
+                  <td><code>pacman -Ss x</code></td>
+                </tr>
+                <tr>
+                  <td><code>dnf</code></td>
+                  <td>Fedora · RHEL</td>
+                  <td><code>sudo dnf install pkg</code></td>
+                  <td><code>sudo dnf remove pkg</code></td>
+                  <td><code>sudo dnf upgrade</code></td>
+                  <td><code>dnf search x</code></td>
+                </tr>
+                <tr>
+                  <td><code>flatpak</code></td>
+                  <td>Universal</td>
+                  <td><code>flatpak install app</code></td>
+                  <td><code>flatpak uninstall app</code></td>
+                  <td><code>flatpak update</code></td>
+                  <td><code>flatpak search x</code></td>
+                </tr>
+                <tr>
+                  <td><code>snap</code></td>
+                  <td>Universal (Ubuntu default)</td>
+                  <td><code>sudo snap install app</code></td>
+                  <td><code>sudo snap remove app</code></td>
+                  <td><code>sudo snap refresh</code></td>
+                  <td><code>snap find x</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Directory map ===== -->
+      <section class="section" aria-labelledby="dirs">
+        <h2 class="section-title h3" id="dirs"><i class="bi bi-diagram-3 me-2 gradient-text"></i>Where things live</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:22%">Path</th><th>What lives there</th></tr></thead>
+              <tbody>
+                <tr><td><code>/home/you</code></td><td>Your files &amp; personal settings — your kingdom</td></tr>
+                <tr><td><code>/etc</code></td><td>System-wide configuration files</td></tr>
+                <tr><td><code>/var/log</code></td><td>System and app logs — first stop when debugging</td></tr>
+                <tr><td><code>/usr/bin</code></td><td>Installed programs</td></tr>
+                <tr><td><code>/tmp</code></td><td>Temporary files (cleared on reboot)</td></tr>
+                <tr><td><code>/root</code></td><td>Root user's home — locked to you</td></tr>
+                <tr><td><code>/media</code> / <code>/mnt</code></td><td>Where USB drives appear</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Keyboard shortcuts ===== -->
+      <section class="section" aria-labelledby="keys">
+        <h2 class="section-title h3" id="keys"><i class="bi bi-keyboard me-2 gradient-text"></i>Terminal superpowers</h2>
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:30%">Shortcut</th><th>Magic</th></tr></thead>
+              <tbody>
+                <tr><td><code>Tab</code></td><td>Autocomplete commands, files and folders</td></tr>
+                <tr><td><code>↑</code> / <code>↓</code></td><td>Walk through your command history</td></tr>
+                <tr><td><code>Ctrl</code> + <code>C</code></td><td>Stop a running command</td></tr>
+                <tr><td><code>Ctrl</code> + <code>L</code></td><td>Clear the screen</td></tr>
+                <tr><td><code>Ctrl</code> + <code>R</code></td><td>Search your history interactively</td></tr>
+                <tr><td><code>Ctrl</code> + <code>Shift</code> + <code>C</code> / <code>V</code></td><td>Copy / paste in most terminals</td></tr>
+                <tr><td><code>exit</code></td><td>Close the shell</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed (not printed) ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Keep this page nearby</h5>
+          <p>You've seen the whole map now — the terminal will feel like home sooner than you think.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="cheat-sheet"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager (not printed) ===== -->
+      <nav class="pager d-flex no-print" aria-label="Topic navigation">
+        <a class="pager-link" href="getting-started.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Getting Started</span></span></a>
+        <a class="pager-link next" href="practice.html"><span><span class="dir">now try it live</span><span class="lbl">Practice Terminal <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5 no-print">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop no-print" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

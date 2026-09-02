@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="What is a Linux distribution? Learn about Debian, Arch, Fedora, openSUSE and what 'based on' means — with a visual distro family tree.">
+  <title>Linux Distributions — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Linux Distributions</li>
+        </ol>
+      </nav>
+
+      <header class="mb-5 reveal">
+        <span class="kicker">topics/02-distributions</span>
+        <h1 class="display-5 fw-bold">Linux <span class="gradient-text">Distributions</span></h1>
+        <p class="section-lead mt-2">Ubuntu, Fedora, Arch, Mint… why are there <em>hundreds</em> of Linuxes?
+        Good news: almost all of them belong to one of a few big families. Let's decode the zoo.</p>
+      </header>
+
+      <!-- ===== What is a distro ===== -->
+      <section class="section pt-0" aria-labelledby="whatIs">
+        <h2 class="section-title" id="whatIs">What is a &ldquo;distro&rdquo;?</h2>
+        <p>Remember: Linux is just the kernel — the engine. By itself, an engine isn't a car. A <b>Linux distribution</b>
+        (or <b>distro</b>) is a complete, ready-to-use package: the Linux kernel <em>plus</em> a desktop, system tools,
+        a package manager, default apps, and an installer.</p>
+
+        <div class="callout"><i class="bi bi-egg-fried"></i>
+          <span><b>Analogy:</b> think of the kernel as flour and eggs. A distro is the finished cake — and each bakery
+          (distro team) has its own recipe. Debian's cake is famously sturdy, Arch hands you the raw ingredients and a
+          whisk, and Ubuntu adds extra frosting so beginners feel at home.</span>
+        </div>
+
+        <p>Because the ingredients are open source, anyone can remix them into a new distro. That's why hundreds exist —
+        and why nearly all of them are <b>based on a handful of originals</b>.</p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Based on ===== -->
+      <section class="section" aria-labelledby="basedOn">
+        <span class="kicker">concept/based-on</span>
+        <h2 class="section-title" id="basedOn">What does &ldquo;based on&rdquo; mean?</h2>
+        <p class="section-lead">A distro &ldquo;based on&rdquo; another one starts from its parent's foundation — the same
+        package manager, the same core system — then changes the desktop, default apps and philosophy on top.
+        It inherits its parent's strengths (and usually its update model).</p>
+
+        <div class="row g-3 mt-1">
+          <div class="col-lg-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <span class="mini-label">Example chain 1</span>
+                <div class="chain mt-2">
+                  <span class="chain-badge"><i class="bi bi-box-seam me-1"></i>Debian</span>
+                  <i class="bi bi-arrow-right"></i>
+                  <span class="chain-badge hl-purple"><i class="bi bi-box-seam me-1"></i>Ubuntu</span>
+                  <i class="bi bi-arrow-right"></i>
+                  <span class="chain-badge hl"><i class="bi bi-box-seam me-1"></i>Linux Mint</span>
+                </div>
+                <p class="text-muted-custom small mt-2 mb-0">Mint uses Ubuntu's system (which uses Debian's), but ships the
+                Cinnamon desktop and a beginner-first setup. All three speak <code>apt</code>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <span class="mini-label">Example chain 2</span>
+                <div class="chain mt-2">
+                  <span class="chain-badge"><i class="bi bi-box-seam me-1"></i>Arch</span>
+                  <i class="bi bi-arrow-right"></i>
+                  <span class="chain-badge hl"><i class="bi bi-box-seam me-1"></i>Manjaro</span>
+                </div>
+                <p class="text-muted-custom small mt-2 mb-0">Manjaro takes Arch's rolling-release power and wraps it in a
+                friendly installer with sensible defaults. Both use <code>pacman</code>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== The four great families ===== -->
+      <section class="section" aria-labelledby="families">
+        <span class="kicker">families/the-big-four</span>
+        <h2 class="section-title" id="families">The four great families</h2>
+        <p class="section-lead mb-4">Learn these four and you understand 95% of the Linux world.</p>
+
+        <div class="row g-4">
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-shield-check"></i></div>
+                <h3 class="h5">Debian</h3>
+                <p class="text-muted-custom small">The grandparent of countless distros. Legendary stability, huge software
+                library, package manager <code>apt</code> with <code>.deb</code> packages. Updates favor reliability over novelty.</p>
+                <p class="small mb-0"><b>Famous children:</b> Ubuntu, Linux Mint, Pop!_OS, Kali, Raspberry Pi OS</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon purple"><i class="bi bi-puzzle"></i></div>
+                <h3 class="h5">Arch Linux</h3>
+                <p class="text-muted-custom small">Minimal, do-it-yourself, <b>rolling release</b> — always the newest software.
+                Package manager <code>pacman</code>. The legendary Arch Wiki is the best documentation in Linux.</p>
+                <p class="small mb-0"><b>Famous children:</b> Manjaro, EndeavourOS, SteamOS (the Steam Deck!)</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon amber"><i class="bi bi-lightning-charge"></i></div>
+                <h3 class="h5">Fedora</h3>
+                <p class="text-muted-custom small">Sponsored by Red Hat, showcases the newest Linux tech first while staying
+                polished and stable. Package manager <code>dnf</code> with <code>.rpm</code> packages. Loved by developers.</p>
+                <p class="small mb-0"><b>Family:</b> Red Hat Enterprise Linux, CentOS Stream</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon green" style="color:#3fb950;background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.25)"><i class="bi bi-gear-wide-connected"></i></div>
+                <h3 class="h5">openSUSE</h3>
+                <p class="text-muted-custom small">German engineering energy: stable <b>Leap</b> or rolling <b>Tumbleweed</b>
+                editions, graphical admin tool <b>YaST</b> that configures everything. Package manager <code>zypper</code>.</p>
+                <p class="small mb-0"><b>Family:</b> SUSE Linux Enterprise</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Family tree (pure HTML/CSS) ===== -->
+      <section class="section" aria-labelledby="tree">
+        <span class="kicker">visual/family-tree</span>
+        <h2 class="section-title" id="tree">The distro family tree</h2>
+        <p class="section-lead mb-4">A simplified map of how the popular distros relate. Green borders mark
+        great beginner picks.</p>
+
+        <div class="table-card reveal" style="padding:1.5rem;overflow-x:auto">
+          <ul class="ylg-tree mb-0">
+            <!-- Debian family -->
+            <li>
+              <span class="node-card"><i class="bi bi-diagram-3-fill"></i>Debian<span class="desc">stable · apt · .deb</span></span>
+              <ul>
+                <li>
+                  <span class="node-card purple"><i class="bi bi-box-seam-fill"></i>Ubuntu<span class="desc">most popular · huge community</span></span>
+                  <ul>
+                    <li><span class="node-card green" style="border-color:rgba(74,222,128,.5)"><i class="bi bi-cup-hot-fill"></i>Linux Mint<span class="desc">great first distro</span></span></li>
+                    <li><span class="node-card"><i class="bi bi-box-seam-fill"></i>Pop!_OS<span class="desc">dev &amp; Nvidia friendly</span></span></li>
+                  </ul>
+                </li>
+                <li><span class="node-card"><i class="bi bi-bug-fill"></i>Kali Linux<span class="desc">security &amp; pentesting</span></span></li>
+              </ul>
+            </li>
+            <!-- Arch family -->
+            <li>
+              <span class="node-card purple"><i class="bi bi-puzzle-fill"></i>Arch<span class="desc">rolling · pacman · DIY</span></span>
+              <ul>
+                <li><span class="node-card"><i class="bi bi-box-seam-fill"></i>Manjaro<span class="desc">Arch, pre-assembled</span></span></li>
+                <li><span class="node-card"><i class="bi bi-controller"></i>SteamOS<span class="desc">powers the Steam Deck</span></span></li>
+              </ul>
+            </li>
+            <!-- Fedora family -->
+            <li>
+              <span class="node-card"><i class="bi bi-lightning-charge-fill"></i>Fedora<span class="desc">cutting-edge · dnf · .rpm · by Red Hat</span></span>
+              <ul>
+                <li><span class="node-card"><i class="bi bi-building"></i>RHEL / CentOS Stream<span class="desc">enterprise servers</span></span></li>
+              </ul>
+            </li>
+            <!-- openSUSE family -->
+            <li>
+              <span class="node-card"><i class="bi bi-gear-wide-connected"></i>openSUSE<span class="desc">Leap (stable) / Tumbleweed (rolling) · zypper</span></span>
+              <ul>
+                <li><span class="node-card"><i class="bi bi-building"></i>SUSE Linux Enterprise<span class="desc">enterprise servers</span></span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Quick chooser table ===== -->
+      <section class="section" aria-labelledby="chooser">
+        <span class="kicker">choose/one-liner</span>
+        <h2 class="section-title" id="chooser">One-line recommendations</h2>
+        <div class="table-card reveal mt-3">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:55%">If you want…</th><th>Try…</th></tr></thead>
+              <tbody>
+                <tr><td>The easiest possible start, coming from Windows</td><td><code>Linux Mint</code></td></tr>
+                <tr><td>A modern, popular, well-documented all-rounder</td><td><code>Ubuntu</code></td></tr>
+                <tr><td>Newest tech in a polished package (great for devs)</td><td><code>Fedora</code></td></tr>
+                <tr><td>To build your own system and learn deeply</td><td><code>Arch</code> (or Manjaro first)</td></tr>
+                <tr><td>Rock-solid "install and forget for 5 years"</td><td><code>Debian</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="callout"><i class="bi bi-magic"></i>
+          <span><b>Still unsure?</b> Take the <a href="getting-started.html#quiz">interactive distro quiz</a> on the
+          Getting Started page — four questions, one recommendation.</span>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Finished this topic?</h5>
+          <p>Saved locally in your browser — no account needed.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="distributions"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="what-is-linux.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> What Is Linux?</span></span></a>
+        <a class="pager-link next" href="desktop-environments.html"><span><span class="dir">next topic</span><span class="lbl">Desktop Environments <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

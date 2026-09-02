@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="What are packages and package managers? Learn apt, pacman, dnf, Flatpak and Snap — how to install, remove and update software the Linux way, with a comparison table.">
+  <title>Package Managers — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Package Managers</li>
+        </ol>
+      </nav>
+
+      <header class="mb-5 reveal">
+        <span class="kicker">topics/05-package-managers</span>
+        <h1 class="display-5 fw-bold">Package <span class="gradient-text">Managers</span></h1>
+        <p class="section-lead mt-2">Forget hunting for <code>.exe</code> files on random websites. On Linux, installing
+        software is one command away — safer, faster and always up to date.</p>
+      </header>
+
+      <!-- ===== Packages & managers ===== -->
+      <section class="section pt-0" aria-labelledby="basics">
+        <h2 class="section-title" id="basics">Packages &amp; package managers</h2>
+        <div class="row g-4">
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-box-seam"></i></div>
+                <h3 class="h5">What is a package?</h3>
+                <p class="text-muted-custom small mb-0">A <b>package</b> is software wrapped in a neat box: the program itself,
+                info about it (name, version), and a list of <b>dependencies</b> — the other packages it needs to work.
+                Common formats: <code>.deb</code> (Debian family) and <code>.rpm</code> (Fedora/Fedora-like).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon purple"><i class="bi bi-inboxes"></i></div>
+                <h3 class="h5">What is a package manager?</h3>
+                <p class="text-muted-custom small mb-0">The <b>package manager</b> is your librarian: it downloads packages from
+                trusted online <b>repositories</b> (repos), resolves dependencies automatically, installs, updates and removes
+                them — all cleanly tracked.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout mt-4"><i class="bi bi-phone"></i>
+          <span><b>Analogy:</b> it's an app store, but older than app stores — and everything in it is free.
+          One command installs an app AND keeps it updated together with your entire system.</span>
+        </div>
+
+        <div class="callout purple"><i class="bi bi-stars"></i>
+          <span><b>Why it's better than downloading installers:</b> software comes from your distro's verified repos
+          (no fake websites), dependencies are shared (no 300&nbsp;MB bundles), and <em>everything</em> updates with one command.</span>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== The big three ===== -->
+      <section class="section" aria-labelledby="bigThree">
+        <span class="kicker">pm/the-big-three</span>
+        <h2 class="section-title" id="bigThree">The big three, side by side</h2>
+        <p class="section-lead mb-4">Your distro family decides which one you use. The workflow is always the same:
+        <b>refresh → install / remove → upgrade</b>.</p>
+
+        <!-- apt -->
+        <div class="reveal" id="apt">
+          <h3 class="h4"><code>apt</code> <span class="flag-chip green ms-2">Debian · Ubuntu · Mint</span></h3>
+          <p>The most common manager of all. Two-step ritual: <code>update</code> refreshes the list of available versions,
+          <code>upgrade</code> actually installs them.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — apt (Ubuntu/Debian/Mint)</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo apt update                 <span class="comment"># refresh package list</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo apt install vlc              <span class="comment"># install</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo apt remove vlc               <span class="comment"># remove</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo apt upgrade                  <span class="comment"># update everything</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>apt search media player           <span class="comment"># search</span></span></code></pre>
+          </div>
+        </div>
+
+        <!-- pacman -->
+        <div class="reveal mt-4" id="pacman">
+          <h3 class="h4"><code>pacman</code> <span class="flag-chip ms-2">Arch · Manjaro</span></h3>
+          <p>Fast and famously cryptic flags. The one to memorize: <code>-Syu</code> syncs repos and upgrades everything —
+          Arch users run it constantly to stay on the rolling edge.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — pacman (Arch/Manjaro)</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo pacman -S vlc      <span class="comment"># install (S = sync)</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo pacman -Rns vlc    <span class="comment"># remove + its deps</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo pacman -Syu        <span class="comment"># refresh + upgrade all</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>pacman -Ss player       <span class="comment"># search</span></span></code></pre>
+          </div>
+        </div>
+
+        <!-- dnf -->
+        <div class="reveal mt-4" id="dnf">
+          <h3 class="h4"><code>dnf</code> <span class="flag-chip ms-2">Fedora · RHEL family</span></h3>
+          <p>The friendliest syntax of the three — commands read like plain English. No separate refresh step needed;
+          <code>dnf</code> checks for fresh metadata automatically.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — dnf (Fedora)</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo dnf install vlc      <span class="comment"># install</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo dnf remove vlc       <span class="comment"># remove</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo dnf upgrade          <span class="comment"># update everything</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>dnf search player         <span class="comment"># search</span></span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Universal formats ===== -->
+      <section class="section" aria-labelledby="universal">
+        <span class="kicker">pm/universal</span>
+        <h2 class="section-title" id="universal">Universal formats: Flatpak &amp; Snap</h2>
+        <p>These work on (almost) any distro. Apps are <b>sandboxed</b> (isolated from your system) and bundled with
+        everything they need — so the exact same package runs on Ubuntu, Fedora or Arch alike.</p>
+
+        <div class="row g-4">
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-bounding-box"></i></div>
+                <h3 class="h5">Flatpak</h3>
+                <p class="text-muted-custom small">Community favorite; the <b>Flathub</b> website hosts thousands of desktop apps
+                (Spotify, Discord, OBS…). Great for graphical apps. Preinstalled on Mint, Fedora and SteamOS.</p>
+                <div class="terminal-block mb-0">
+                  <div class="terminal-header">
+                    <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+                    <span class="terminal-title">bash — flatpak</span>
+                    <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+                  </div>
+                  <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>flatpak install flathub org.videolan.VLC</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>flatpak update</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>flatpak uninstall org.videolan.VLC</span></code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon purple"><i class="bi bi-box2"></i></div>
+                <h3 class="h5">Snap</h3>
+                <p class="text-muted-custom small">Made by Canonical (the company behind Ubuntu); preinstalled on Ubuntu via
+                the App Center. Updates automatically in the background. Some find it slower to start; others love the zero-maintenance.</p>
+                <div class="terminal-block mb-0">
+                  <div class="terminal-header">
+                    <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+                    <span class="terminal-title">bash — snap</span>
+                    <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+                  </div>
+                  <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo snap install vlc</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo snap refresh      <span class="comment"># update all</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo snap remove vlc</span></code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout"><i class="bi bi-lightbulb"></i>
+          <span><b>Which to use?</b> Prefer your distro's native packages first (apt/pacman/dnf) — they're best integrated.
+          Reach for Flatpak or Snap when an app isn't in your repos or you want a newer version.</span>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Comparison table ===== -->
+      <section class="section" aria-labelledby="compare">
+        <span class="kicker">pm/cheat-table</span>
+        <h2 class="section-title" id="compare">Comparison: one table to remember</h2>
+        <div class="table-card reveal mt-3">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead>
+                <tr><th>Manager</th><th>Distro family</th><th>Format</th><th>Install</th><th>Remove</th><th>Update all</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-semibold"><code>apt</code></td>
+                  <td>Debian, Ubuntu, Mint</td>
+                  <td><code>.deb</code></td>
+                  <td><code>sudo apt install pkg</code></td>
+                  <td><code>sudo apt remove pkg</code></td>
+                  <td><code>sudo apt update &amp;&amp; sudo apt upgrade</code></td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold"><code>pacman</code></td>
+                  <td>Arch, Manjaro</td>
+                  <td><code>.pkg.tar</code></td>
+                  <td><code>sudo pacman -S pkg</code></td>
+                  <td><code>sudo pacman -Rns pkg</code></td>
+                  <td><code>sudo pacman -Syu</code></td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold"><code>dnf</code></td>
+                  <td>Fedora, RHEL</td>
+                  <td><code>.rpm</code></td>
+                  <td><code>sudo dnf install pkg</code></td>
+                  <td><code>sudo dnf remove pkg</code></td>
+                  <td><code>sudo dnf upgrade</code></td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold"><code>flatpak</code></td>
+                  <td>Any (universal)</td>
+                  <td>Flatpak</td>
+                  <td><code>flatpak install app</code></td>
+                  <td><code>flatpak uninstall app</code></td>
+                  <td><code>flatpak update</code></td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold"><code>snap</code></td>
+                  <td>Any (Ubuntu default)</td>
+                  <td>Snap</td>
+                  <td><code>sudo snap install app</code></td>
+                  <td><code>sudo snap remove app</code></td>
+                  <td><code>sudo snap refresh</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Finished this topic?</h5>
+          <p>Saved locally in your browser — no account needed.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="package-managers"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="terminal-and-shell.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Terminal &amp; Shell</span></span></a>
+        <a class="pager-link next" href="file-system.html"><span><span class="dir">next topic</span><span class="lbl">The File System <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

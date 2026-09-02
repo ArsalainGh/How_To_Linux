@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your Linux Guide — learn Linux from zero. Beginner-friendly tutorials on distros, terminals, package managers, permissions and more.">
+  <title>Your Linux Guide — Learn Linux from Zero</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <!-- Fonts: Inter (body) + Fira Code (terminal/code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 + Bootstrap Icons (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom dark theme -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <!-- Search filters the topic grid below + shows quick-jump results (main.js) -->
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== Hero ===================== -->
+  <header class="hero">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="hero-tag"><i class="bi bi-lightning-charge-fill"></i> Beginner friendly · No experience needed</span>
+          <h1 class="hero-title">Learn Linux <span class="gradient-text">from Zero.</span></h1>
+          <p class="lead mt-3">
+            A friendly, jargon-free guide to the world's most powerful operating system.
+            Ten short topics take you from &ldquo;what even is Linux?&rdquo; to installing it yourself —
+            no computer science degree required.
+          </p>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a href="what-is-linux.html" class="btn-ylg btn"><i class="bi bi-play-fill"></i> Start Learning</a>
+            <a href="practice.html" class="btn-ylg-outline btn"><i class="bi bi-terminal"></i> Try a live terminal</a>
+            <a href="getting-started.html#quiz" class="btn-ylg-outline btn"><i class="bi bi-magic"></i> Find your distro</a>
+          </div>
+          <div class="hero-stats">
+            <span class="hero-stat"><b>10</b> guided topics</span>
+            <span class="hero-stat"><b>40+</b> commands</span>
+            <span class="hero-stat"><b>100%</b> free &amp; open</span>
+            <span class="hero-stat"><b>0</b> prerequisites</span>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <!-- Decorative terminal with a typed-command animation (main.js) -->
+          <div class="terminal-block shadow-lg" aria-hidden="true">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">guest@yourlinuxguide — bash</span>
+              <span style="width:52px"></span>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">guest@ylg:~$</span>whoami</span><span class="output">future-linux-user</span><span class="cmdline"><span class="prompt">guest@ylg:~$</span><span id="typedCommand"></span><span class="cursor"></span></span><span class="output"> </span><span class="comment">// this is where your journey begins</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== Progress overview ===================== -->
+  <section id="progress" class="section pt-2">
+    <div class="container">
+      <div class="progress-card reveal">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+          <div>
+            <span class="mini-label">Your journey</span>
+            <h2 class="h4 mb-0" id="progressText">0 of 10 topics completed</h2>
+          </div>
+          <span class="h4 mb-0 gradient-text" id="progressPercent">0%</span>
+        </div>
+        <!-- Width is set from localStorage by main.js -->
+        <div class="ylg-progress progress" role="progressbar" aria-label="Learning progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar" id="progressBar" style="width:0%"></div>
+        </div>
+        <p class="text-muted-custom small mt-3 mb-0" id="progressMsg">
+          Your progress is saved automatically in this browser.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Topic cards ===================== -->
+  <section class="section pt-1" aria-labelledby="topicsHeading">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <span class="kicker">topics/curriculum</span>
+        <h2 class="section-title" id="topicsHeading">The full roadmap</h2>
+        <p class="section-lead mx-auto">Follow the topics in order, or jump to whatever interests you.
+        Each topic ends with a &ldquo;Mark as Completed&rdquo; button to track your progress.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Each card column carries data-topic-card so JS can flag completion + power the search filter -->
+        <div class="col-md-6 col-lg-4 reveal" data-topic-card="what-is-linux">
+          <a href="what-is-linux.html" class="topic-card">
+            <span class="card-num">01</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-lightbulb"></i></div>
+              <h3>What Is Linux?</h3>
+              <p>The story of the free operating system running most of the internet — and why it matters.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal d1" data-topic-card="distributions">
+          <a href="distributions.html" class="topic-card">
+            <span class="card-num">02</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-diagram-3"></i></div>
+              <h3>Linux Distributions</h3>
+              <p>Ubuntu? Arch? Mint? Decode the hundreds of Linux &ldquo;flavors&rdquo; and how they relate.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal d2" data-topic-card="desktop-environments">
+          <a href="desktop-environments.html" class="topic-card">
+            <span class="card-num">03</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-display"></i></div>
+              <h3>Desktop Environments</h3>
+              <p>GNOME, KDE Plasma, XFCE, Cinnamon — pick the look and feel that suits you.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal" data-topic-card="terminal-and-shell">
+          <a href="terminal-and-shell.html" class="topic-card">
+            <span class="card-num">04</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-terminal"></i></div>
+              <h3>Terminal &amp; Shell</h3>
+              <p>Demystify the black window with green text — and learn your first real commands.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal d1" data-topic-card="package-managers">
+          <a href="package-managers.html" class="topic-card">
+            <span class="card-num">05</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-box-seam"></i></div>
+              <h3>Package Managers</h3>
+              <p>apt, pacman, dnf, Flatpak, Snap — install software the smart, Linux way.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal d2" data-topic-card="file-system">
+          <a href="file-system.html" class="topic-card">
+            <span class="card-num">06</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-folder2-open"></i></div>
+              <h3>The File System</h3>
+              <p>One tree, one root. Explore /home, /etc, /var and the logic behind them.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal" data-topic-card="users-and-permissions">
+          <a href="users-and-permissions.html" class="topic-card">
+            <span class="card-num">07</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-shield-lock"></i></div>
+              <h3>Users &amp; Permissions</h3>
+              <p>Root, sudo and the famous rwx — understand who can do what, and why it's safer.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal d1" data-topic-card="essential-concepts">
+          <a href="essential-concepts.html" class="topic-card">
+            <span class="card-num">08</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-cpu"></i></div>
+              <h3>Essential Concepts</h3>
+              <p>Kernel, Wayland vs X11, GRUB, systemd, repositories — the words you'll keep hearing.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal d2" data-topic-card="getting-started">
+          <a href="getting-started.html" class="topic-card">
+            <span class="card-num">09</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-rocket-takeoff"></i></div>
+              <h3>Getting Started</h3>
+              <p>Try Linux from a USB stick, install it, and take the distro-finder quiz.</p>
+              <span class="card-cta">Start learning <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4 reveal" data-topic-card="cheat-sheet">
+          <a href="cheat-sheet.html" class="topic-card">
+            <span class="card-num">10</span>
+            <div class="card-body">
+              <div class="topic-icon"><i class="bi bi-journal-text"></i></div>
+              <h3>Cheat Sheet</h3>
+              <p>Every essential command on one print-friendly page. Keep it next to your keyboard.</p>
+              <span class="card-cta">Open reference <i class="bi bi-arrow-right"></i></span>
+              <span class="card-done"><i class="bi bi-check-circle-fill"></i> Done</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Shown when the navbar search filters out every card -->
+        <div class="col-12 d-none" id="noResults">
+          <div class="callout purple justify-content-center"><i class="bi bi-search"></i>
+            <span>No topics match your search. Try <b>terminal</b>, <b>apt</b> or <b>permissions</b>.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo: the built-in live practice terminal (terminal.js) -->
+      <div class="callout mt-5 reveal align-items-center"><i class="bi bi-terminal-plus"></i>
+        <span><b>Don't just read — type.</b> This guide includes a <b>live Linux terminal built into the site</b>:
+        its own file system, pipes, Tab completion, Run buttons on every example — a sandbox where nothing can
+        break. <a href="practice.html">Open the Practice Terminal <i class="bi bi-arrow-right"></i></a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Why learn Linux ===================== -->
+  <section class="section pt-1" aria-labelledby="whyHeading">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <span class="kicker">answer/why</span>
+        <h2 class="section-title" id="whyHeading">Why learn Linux at all?</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="info-card accent card h-100">
+            <div class="card-body">
+              <div class="info-icon"><i class="bi bi-cash-coin"></i></div>
+              <h3 class="h5">Completely free</h3>
+              <p class="text-muted-custom small mb-0">No licenses, no subscriptions, no activation keys. Download it, use it, share it — forever.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal d1">
+          <div class="info-card accent card h-100">
+            <div class="card-body">
+              <div class="info-icon purple"><i class="bi bi-shield-check"></i></div>
+              <h3 class="h5">Secure by design</h3>
+              <p class="text-muted-custom small mb-0">A strict permission model and rapid updates keep viruses and malware mostly a Windows problem.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal d2">
+          <div class="info-card accent card h-100">
+            <div class="card-body">
+              <div class="info-icon"><i class="bi bi-code-slash"></i></div>
+              <h3 class="h5">Runs the world</h3>
+              <p class="text-muted-custom small mb-0">Most servers, all top supercomputers, Android phones, smart TVs — Linux is everywhere.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal d3">
+          <div class="info-card accent card h-100">
+            <div class="card-body">
+              <div class="info-icon amber"><i class="bi bi-recycle"></i></div>
+              <h3 class="h5">Revives old PCs</h3>
+              <p class="text-muted-custom small mb-0">A lightweight distro makes that dusty 10-year-old laptop feel snappy again.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Call to action ===================== -->
+  <section class="section pt-2">
+    <div class="container">
+      <div class="complete-box reveal">
+        <div>
+          <h5>Ready to become a Linux user?</h5>
+          <p>Ten topics. One evening each. A lifetime skill.</p>
+        </div>
+        <a href="what-is-linux.html" class="btn-ylg btn"><i class="bi bi-rocket-takeoff"></i> Begin with topic 01</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back-to-top button (main.js controls visibility) -->
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <!-- Bootstrap JS + site JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

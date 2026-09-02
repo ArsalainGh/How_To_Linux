@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Resources — hand-picked Linux books and YouTube channels to keep learning after the ten core topics of Your Linux Guide.">
+  <title>Resources — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Resources</li>
+        </ol>
+      </nav>
+
+      <!-- Page header -->
+      <header class="mb-5 reveal">
+        <span class="kicker">library/resources</span>
+        <h1 class="display-5 fw-bold">Learning <span class="gradient-text">Resources</span></h1>
+        <p class="section-lead mt-2">Finished the ten topics and hungry for more? These hand-picked books and
+        channels are where to go next. Every card opens in a new tab.</p>
+      </header>
+
+      <div id="resources">
+
+        <!-- ============ Essential Books ============ -->
+        <section class="section pt-0" aria-labelledby="booksHeading">
+          <span class="kicker">library/books</span>
+          <h2 class="section-title" id="booksHeading"><i class="bi bi-book-half me-2 gradient-text"></i>Essential Books</h2>
+          <p class="section-lead mb-4">Three titles you'll find on every Linux bookshelf — pick the one that matches where you are.</p>
+
+          <div class="row g-4">
+            <!-- Book 1 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-cover" src="https://covers.openlibrary.org/b/isbn/9781593279523-M.jpg" alt="Book cover: The Linux Command Line" loading="lazy" width="60" height="90" data-fallback="TLCL" data-tone="green">
+                    <span class="badge resource-tag">Beginner</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">The Linux Command Line</h4>
+                  <p class="resource-meta mb-2">by William Shotts</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    The classic first book: 500+ pages that take you from your very first
+                    keystroke to writing your own shell scripts. Free to read online.
+                  </p>
+                  <span class="resource-cta small">Read free online <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d1">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://nostarch.com/howlinuxworks3" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-cover" src="https://covers.openlibrary.org/b/isbn/9781718500402-M.jpg" alt="Book cover: How Linux Works" loading="lazy" width="60" height="90" data-fallback="HLW" data-tone="green">
+                    <span class="badge resource-tag">Internals</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">How Linux Works</h4>
+                  <p class="resource-meta mb-2">by Brian Ward</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    What actually happens between the power button and the login prompt —
+                    boot, processes, devices and networking, demystified.
+                  </p>
+                  <span class="resource-cta small">View book <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d2">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://admin.com/" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-cover" src="https://covers.openlibrary.org/b/isbn/9780134277554-M.jpg" alt="Book cover: UNIX and Linux System Administration Handbook" loading="lazy" width="60" height="90" data-fallback="ULH" data-tone="green">
+                    <span class="badge resource-tag">SysAdmin</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">UNIX &amp; Linux System Administration Handbook</h4>
+                  <p class="resource-meta mb-2">by Evi Nemeth et al.</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    The administration bible used in universities and data centers for
+                    decades — servers, storage, security and more.
+                  </p>
+                  <span class="resource-cta small">Official site <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ============ YouTube Channels ============ -->
+        <section class="section" aria-labelledby="channelsHeading">
+          <span class="kicker">watch/youtube</span>
+          <h2 class="section-title" id="channelsHeading"><i class="bi bi-youtube me-2 gradient-text"></i>YouTube Channels</h2>
+          <p class="section-lead mb-4">Ten channels worth your subscription feed — from structured courses to terminal-tinker fun.</p>
+
+          <div class="row g-4">
+            <!-- Channel 1 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@LearnLinuxTV" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/LearnLinuxTV" alt="LearnLinuxTV channel avatar" loading="lazy" width="64" height="64" data-fallback="LL" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Tutorials &amp; Courses</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">LearnLinuxTV</h4>
+                  <p class="resource-meta mb-2">Jay LaCroix</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    Full-length courses, distro reviews and homelab guides — one of the
+                    best structured paths from beginner to confident user.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 2 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d1">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@NetworkChuck" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/NetworkChuck" alt="NetworkChuck channel avatar" loading="lazy" width="64" height="64" data-fallback="NC" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Projects &amp; Networking</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">NetworkChuck</h4>
+                  <p class="resource-meta mb-2">Chuck Keith</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    High-energy networking and Linux projects — Raspberry Pi build days,
+                    hacking labs and the famous "you need to learn Linux" energy.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 3 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d2">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@DistroTube" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/DistroTube" alt="DistroTube channel avatar" loading="lazy" width="64" height="64" data-fallback="DT" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">CLI &amp; Customization</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">DistroTube</h4>
+                  <p class="resource-meta mb-2">Derek Taylor</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    The terminal-first veteran: tiling window managers, minimal setups,
+                    shell workflows and honest desktop reviews.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 4 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@TheLinuxExperiment" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/TheLinuxExperiment" alt="The Linux Experiment channel avatar" loading="lazy" width="64" height="64" data-fallback="LE" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">News &amp; Desktop</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">The Linux Experiment</h4>
+                  <p class="resource-meta mb-2">Nick</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    Weekly Linux news, desktop-environment deep dives and distro reviews —
+                    the easiest way to stay current.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 5 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d1">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@ThePrimeagen" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/ThePrimeagen" alt="ThePrimeagen channel avatar" loading="lazy" width="64" height="64" data-fallback="TP" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Streams &amp; Editors</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">ThePrimeagen</h4>
+                  <p class="resource-meta mb-2">Michael Paulson</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    High-energy streams on Neovim, terminals, dev tooling and culture —
+                    chaotic in the best way.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 6 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d2">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@ChrisTitusTech" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/ChrisTitusTech" alt="Chris Titus Tech channel avatar" loading="lazy" width="64" height="64" data-fallback="CT" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Windows &rarr; Linux</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">Chris Titus Tech</h4>
+                  <p class="resource-meta mb-2">Chris Titus</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    Windows debloating, Linux adoption guides and power-user tweaks —
+                    great for the switch-over crowd.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 7 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@dhh" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/dhh" alt="David Heinemeier Hansson channel avatar" loading="lazy" width="64" height="64" data-fallback="DH" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Talks &amp; Perspectives</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">David Heinemeier Hansson</h4>
+                  <p class="resource-meta mb-2">DHH — creator of Ruby on Rails</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    Strong opinions on software, the web and developer happiness — plus
+                    his opinionated Omarchy Linux desktop.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 8 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d1">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@ForrestKnight" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/ForrestKnight" alt="ForrestKnight channel avatar" loading="lazy" width="64" height="64" data-fallback="FK" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Career &amp; Setups</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">ForrestKnight</h4>
+                  <p class="resource-meta mb-2">Forrest Knight</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    Clean developer-career guides and tasteful Linux-powered workstations
+                    — calm, honest and well researched.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 9 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal d2">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@typecraft_dev" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/typecraft_dev" alt="typecraft channel avatar" loading="lazy" width="64" height="64" data-fallback="TC" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Neovim &amp; TUI</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">typecraft</h4>
+                  <p class="resource-meta mb-2">Robert</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    Terminal user-interface tools, Rust, Neovim configs and making the
+                    command line feel luxurious.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Channel 10 -->
+            <div class="col-12 col-md-6 col-lg-4 reveal">
+              <a class="card resource-card bg-dark text-white border-secondary h-100"
+                 href="https://www.youtube.com/@LinuxBTW" target="_blank" rel="noopener noreferrer">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <img class="resource-img resource-avatar" src="https://unavatar.io/youtube/LinuxBTW" alt="LinuxBTW channel avatar" loading="lazy" width="64" height="64" data-fallback="LB" data-tone="purple">
+                    <span class="badge resource-tag channel-tag">Memes &amp; Ricing</span>
+                  </div>
+                  <h4 class="card-title h5 text-white mb-1">LinuxBTW</h4>
+                  <p class="resource-meta mb-2">Linux, by the way</p>
+                  <p class="card-text text-muted-custom small flex-grow-1">
+                    The fun side of FOSS: desktop ricing, distro memes and "I use Arch,
+                    by the way" culture — learn by laughing.
+                  </p>
+                  <span class="resource-cta small">Visit channel <i class="bi bi-box-arrow-up-right"></i></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== Call to action (not part of the 10-topic progress) ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Bookmarked everything?</h5>
+          <p>Then head back to the roadmap — every topic takes about one evening.</p>
+        </div>
+        <a href="index.html" class="btn-ylg btn"><i class="bi bi-map"></i> Back to the topics</a>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Page navigation">
+        <a class="pager-link" href="index.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Home</span></span></a>
+        <a class="pager-link next" href="cheat-sheet.html"><span><span class="dir">next page</span><span class="lbl">Cheat Sheet <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Essential Linux concepts in plain language: the kernel, display servers (X11 vs Wayland), the GRUB bootloader, systemd and software repositories.">
+  <title>Essential Concepts — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Essential Concepts</li>
+        </ol>
+      </nav>
+
+      <header class="mb-5 reveal">
+        <span class="kicker">topics/08-essential-concepts</span>
+        <h1 class="display-5 fw-bold">Essential <span class="gradient-text">Concepts</span></h1>
+        <p class="section-lead mt-2">Five words you'll hear again and again in the Linux world. Understand these
+        and forum threads, tutorials and error messages start making sense.</p>
+      </header>
+
+      <!-- ===== Kernel ===== -->
+      <section class="section pt-0" aria-labelledby="kernel">
+        <span class="kicker">concept/kernel</span>
+        <h2 class="section-title" id="kernel">1 · The Kernel</h2>
+        <p>The <b>kernel</b> is the heart of the operating system — the one program that talks directly to your hardware.
+        It decides which app gets processor time, manages memory, reads your keyboard, drives your Wi-Fi card, and
+        hundreds of other jobs. Apps never touch hardware directly; they ask the kernel.</p>
+
+        <div class="callout"><i class="bi bi-translate"></i>
+          <span><b>Analogy:</b> the kernel is a translator between your apps and your hardware. Your browser says
+          &ldquo;fetch this website&rdquo; — the kernel turns that into signals your network card understands.</span>
+        </div>
+
+        <div class="terminal-block">
+          <div class="terminal-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="terminal-title">bash — which kernel are you running?</span>
+            <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+          </div>
+          <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>uname -r</span><span class="output">6.8.0-45-generic</span></code></pre>
+        </div>
+        <p class="text-muted-custom small">Distros update the kernel like any other package — that's why a plain
+        <code>apt upgrade</code> occasionally asks for a reboot.</p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Display server: X11 vs Wayland ===== -->
+      <section class="section" aria-labelledby="display">
+        <span class="kicker">concept/display-server</span>
+        <h2 class="section-title" id="display">2 · Display server: X11 vs Wayland</h2>
+        <p>The <b>display server</b> is the invisible layer between your apps and your screen: it draws windows,
+        and passes your mouse clicks and keypresses to the right app. Linux has two generations of it:</p>
+
+        <div class="table-card reveal">
+          <div class="table-responsive">
+            <table class="ylg-table table align-middle mb-0">
+              <thead><tr><th style="width:22%"></th><th>X11 (legacy)</th><th>Wayland (modern)</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="fw-semibold">Age</td>
+                  <td class="text-muted-custom">1984 — four decades of patches</td>
+                  <td class="text-muted-custom">2008 — clean modern design</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Security</td>
+                  <td class="text-muted-custom">Any app can read any other app's input (a design flaw today)</td>
+                  <td>Apps are isolated from each other</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Smoothness</td>
+                  <td class="text-muted-custom">Can show tearing on some setups</td>
+                  <td>Tear-free by design, great for HiDPI</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Who uses it now</td>
+                  <td class="text-muted-custom">Older setups, some niche tools</td>
+                  <td>Default on modern GNOME &amp; KDE (Fedora, Ubuntu)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="callout"><i class="bi bi-lightbulb"></i>
+          <span><b>What should you do?</b> Nothing! Your distro picks the default, and on modern systems that's
+          Wayland. You may just see the choice at the login screen's gear menu — now you know what it means.</span>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Bootloader ===== -->
+      <section class="section" aria-labelledby="bootloader">
+        <span class="kicker">concept/grub</span>
+        <h2 class="section-title" id="bootloader">3 · Bootloader (GRUB)</h2>
+        <p>When you press the power button, your PC's firmware needs one tiny program that knows where the operating
+        system lives and how to start it. That's the <b>bootloader</b> — and on Linux it's almost always <b>GRUB</b>
+        (Grand Unified Bootloader).</p>
+        <p>If you have more than one OS installed, GRUB greets you with a simple menu: <em>&ldquo;Ubuntu — Windows Boot
+        Manager — advanced options&hellip;&rdquo;</em>. That's what makes <b>dual booting</b> painless. GRUB also keeps
+        older kernels on the menu, so if an update ever misbehaves you can boot the previous one and fix things.</p>
+
+        <div class="callout purple"><i class="bi bi-door-open"></i>
+          <span><b>Analogy:</b> GRUB is the receptionist of your PC: &ldquo;Which system would you like to visit today?&rdquo;</span>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== systemd ===== -->
+      <section class="section" aria-labelledby="systemd">
+        <span class="kicker">concept/systemd</span>
+        <h2 class="section-title" id="systemd">4 · systemd</h2>
+        <p>Once the kernel is up, <b>systemd</b> is the first real program that starts (it literally runs as process #1).
+        Its job: bring up everything else — network, Bluetooth, printing, your login screen — in the right order, and
+        keep background programs (<b>services</b> or <b>daemons</b>) alive afterwards.</p>
+
+        <p>You control services with the <code>systemctl</code> command:</p>
+
+        <div class="terminal-block">
+          <div class="terminal-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="terminal-title">bash — talking to systemd</span>
+            <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+          </div>
+          <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>systemctl status bluetooth      <span class="comment"># is it running?</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo systemctl restart NetworkManager  <span class="comment"># restart Wi-Fi service</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo systemctl enable ssh         <span class="comment"># start ssh on every boot</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>systemctl poweroff              <span class="comment"># yes, it can even shut down</span></span></code></pre>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Repositories ===== -->
+      <section class="section" aria-labelledby="repos">
+        <span class="kicker">concept/repositories</span>
+        <h2 class="section-title" id="repos">5 · Repositories</h2>
+        <p>Remember the package manager topic? <b>Repositories</b> (&ldquo;repos&rdquo;) are the online warehouses your
+        package manager downloads from. Each distro maintains its own — thousands of packages, tested to work together
+        and built from verified source code.</p>
+        <p>Your system keeps a list of repo addresses (on Debian/Ubuntu they live in <code>/etc/apt/sources.list</code>
+        and friends). <code>apt update</code> is simply your PC asking each repo: &ldquo;anything new?&rdquo; You can add
+        extra repos (like <b>PPAs</b> on Ubuntu) for software not included by default — but stick to well-known sources,
+        since a repo is a position of trust.</p>
+
+        <div class="callout"><i class="bi bi-shield-check"></i>
+          <span><b>Why it matters:</b> this model is a big part of Linux security. Instead of trusting random download
+          buttons across the web, you trust one curated warehouse maintained by your distro.</span>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Finished this topic?</h5>
+          <p>Saved locally in your browser — no account needed.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="essential-concepts"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="users-and-permissions.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Users &amp; Permissions</span></span></a>
+        <a class="pager-link next" href="getting-started.html"><span><span class="dir">next topic</span><span class="lbl">Getting Started <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

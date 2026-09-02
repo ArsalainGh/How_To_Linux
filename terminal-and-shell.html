@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Terminal vs shell explained simply, plus your first Linux commands: ls, cd, pwd, mkdir, rm, cp, mv, cat, sudo, chmod, grep, find and man — with copy buttons.">
+  <title>Terminal &amp; Shell — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Terminal &amp; Shell</li>
+        </ol>
+      </nav>
+
+      <header class="mb-5 reveal">
+        <span class="kicker">topics/04-terminal-and-shell</span>
+        <h1 class="display-5 fw-bold">Terminal <span class="gradient-text">&amp; Shell</span></h1>
+        <p class="section-lead mt-2">The black window with blinking text isn't scary — it's just a conversation
+        with your computer, typed instead of clicked. Here's how to speak it. Every example has a
+        <b>Copy</b> button so you can paste it straight into your own terminal.</p>
+      </header>
+
+      <!-- ===== Terminal vs shell ===== -->
+      <section class="section pt-0" aria-labelledby="tvss">
+        <h2 class="section-title" id="tvss">Terminal vs shell — what's the difference?</h2>
+        <div class="row g-4">
+          <div class="col-md-6 reveal">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon"><i class="bi bi-window"></i></div>
+                <h3 class="h5">The terminal = the window</h3>
+                <p class="text-muted-custom small mb-0">A <b>terminal emulator</b> is the app window itself — it draws the text,
+                handles your keyboard and colors. Examples: GNOME Terminal, Konsole, Alacritty. It emulates the physical
+                terminals of the 1970s — hence the name.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 reveal d1">
+            <div class="info-card accent card h-100">
+              <div class="card-body">
+                <div class="info-icon purple"><i class="bi bi-chat-left-text"></i></div>
+                <h3 class="h5">The shell = the program inside</h3>
+                <p class="text-muted-custom small mb-0">The <b>shell</b> is the program running <em>inside</em> the terminal that
+                reads what you type, runs the command, and prints the result. It's the interpreter between you and the OS.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout mt-4"><i class="bi bi-telephone"></i>
+          <span><b>Analogy:</b> the terminal is the telephone; the shell is the person you talk to on the other end.
+          You can swap phones (terminals) or change who answers (shells) — independently.</span>
+        </div>
+
+        <!-- Common shells -->
+        <div class="row g-4 mt-1">
+          <div class="col-md-4 reveal">
+            <div class="info-card card h-100">
+              <div class="card-body">
+                <h3 class="h6"><code>bash</code> <span class="flag-chip green ms-1">the default everywhere</span></h3>
+                <p class="text-muted-custom small mb-0">Bourne Again SHell. Included on virtually every Linux system and server —
+                everything you learn here works in it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 reveal d1">
+            <div class="info-card card h-100">
+              <div class="card-body">
+                <h3 class="h6"><code>zsh</code> <span class="flag-chip ms-1">the customize-everything one</span></h3>
+                <p class="text-muted-custom small mb-0">Bash-compatible with better completion and plugins — famous with the
+                Oh My Zsh framework. Default on macOS.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 reveal d2">
+            <div class="info-card card h-100">
+              <div class="card-body">
+                <h3 class="h6"><code>fish</code> <span class="flag-chip ms-1">the friendly one</span></h3>
+                <p class="text-muted-custom small mb-0">Friendly Interactive SHell: live auto-suggestions and syntax colors
+                out of the box. Great once you know the basics.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anatomy of a command -->
+        <h3 class="h5 mt-5">Anatomy of a command</h3>
+        <p>Almost every command follows the same pattern: <b>command</b>, then <b>options</b> (flags, usually starting with <code>-</code>),
+        then <b>arguments</b> (what to act on).</p>
+        <div class="terminal-block">
+          <div class="terminal-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="terminal-title">command · options · arguments</span>
+            <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+          </div>
+          <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>ls -la /home/alex</span><span class="comment">#  │    │      └─ argument: WHICH folder</span><span class="comment">#  │    └──────── option “long list, show hidden”</span><span class="comment">#  └───────────── command: “list directory contents”</span></code></pre>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ===== Command reference ===== -->
+      <section class="section" aria-labelledby="commands">
+        <span class="kicker">commands/essentials</span>
+        <h2 class="section-title" id="commands">Your first 13 commands</h2>
+        <p class="section-lead mb-4">Learn these and you can navigate, manage files, and fix most beginner problems.</p>
+
+        <!-- ---- pwd ---- -->
+        <div class="reveal" id="pwd">
+          <h3 class="h4"><code>pwd</code> — where am I?</h3>
+          <p>Prints your <b>current location</b> in the file system (print working directory). The answer to &ldquo;which folder am I in right now?&rdquo;</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — pwd</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>pwd</span><span class="output">/home/alex</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- ls ---- -->
+        <div class="reveal" id="ls">
+          <h3 class="h4"><code>ls</code> — list what's here</h3>
+          <p>Shows the files and folders in a directory. Your most-used command by far.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — ls</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>ls -la</span><span class="output">drwxr-xr-x  Documents</span><span class="output">drwxr-xr-x  Downloads</span><span class="output">-rw-r--r--  notes.txt</span><span class="output">-rw-r--r--  .hidden-file</span></code></pre>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="flag-chip">-l · long, detailed list</span>
+            <span class="flag-chip">-a · show hidden files (they start with .)</span>
+            <span class="flag-chip">-h · human-readable sizes</span>
+          </div>
+        </div>
+
+        <!-- ---- cd ---- -->
+        <div class="reveal mt-4" id="cd">
+          <h3 class="h4"><code>cd</code> — change directory</h3>
+          <p>Moves you around. <code>..</code> means &ldquo;one level up&rdquo;, <code>~</code> is your home folder, and <code>cd</code> alone takes you straight home.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — cd</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>cd Documents/projects</span><span class="cmdline"><span class="prompt">alex@pc:~/Documents/projects$</span>cd ..</span><span class="cmdline"><span class="prompt">alex@pc:~/Documents$</span>cd ~</span></code></pre>
+          </div>
+          <div class="callout"><i class="bi bi-lightbulb"></i>
+            <span><b>Pro tip:</b> press <b>Tab</b> to autocomplete folder and file names — you should almost never type a full path by hand.</span>
+          </div>
+        </div>
+
+        <!-- ---- mkdir ---- -->
+        <div class="reveal mt-4" id="mkdir">
+          <h3 class="h4"><code>mkdir</code> — make a folder</h3>
+          <p>Creates new directories. The <code>-p</code> (parents) flag creates any missing levels in one go.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — mkdir</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>mkdir -p projects/my-first-app</span><span class="comment"># creates “projects” AND “my-first-app” inside it</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- rm ---- -->
+        <div class="reveal mt-4" id="rm">
+          <h3 class="h4"><code>rm</code> — remove (careful!)</h3>
+          <p>Deletes files; add <code>-r</code> (recursive) for folders. There is <b>no trash can</b> in the terminal —
+          once removed, it's gone.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — rm</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>rm old-notes.txt</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>rm -r old-folder</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>rm -i maybe-keep.txt</span><span class="output">rm: remove regular file 'maybe-keep.txt'? y</span></code></pre>
+          </div>
+          <div class="callout warning"><i class="bi bi-exclamation-triangle"></i>
+            <span><b>Danger zone:</b> <code>rm -rf</code> force-deletes without asking. Double-check every path before
+            pressing Enter — <code>rm -rf /</code> is the classic &ldquo;delete the whole system&rdquo; mistake.</span>
+          </div>
+        </div>
+
+        <!-- ---- cp ---- -->
+        <div class="reveal mt-4" id="cp">
+          <h3 class="h4"><code>cp</code> — copy files</h3>
+          <p>Copies a file (or folder with <code>-r</code>) to a new location or name. The original stays put.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — cp</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>cp notes.txt notes-backup.txt</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>cp -r Pictures/ /media/usb/backup</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- mv ---- -->
+        <div class="reveal mt-4" id="mv">
+          <h3 class="h4"><code>mv</code> — move or rename</h3>
+          <p>One command, two jobs: move something to another folder, or rename it in place.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — mv</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>mv report.txt Documents/          <span class="comment"># move</span></span><span class="cmdline"><span class="prompt">alex@pc:~$</span>mv report.txt final-report.txt   <span class="comment"># rename</span></span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- cat ---- -->
+        <div class="reveal mt-4" id="cat">
+          <h3 class="h4"><code>cat</code> — show a file's contents</h3>
+          <p>Prints a whole text file to the screen. Great for quick peeks; for long files, <code>less file.txt</code> lets you scroll (press <code>q</code> to quit).</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — cat</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>cat shopping.txt</span><span class="output">coffee</span><span class="output">more coffee</span><span class="output">coffee beans (backup)</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- grep ---- -->
+        <div class="reveal mt-4" id="grep">
+          <h3 class="h4"><code>grep</code> — find text inside files</h3>
+          <p>A search dog for text: it prints every line that matches your pattern. Essential for digging through logs.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — grep</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>grep -i "error" app.log</span><span class="output">2025-01-12 10:31:02 ERROR connection refused</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>grep -r "password" ~/conf</span><span class="comment"># -r searches every file in the folder, recursively</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- find ---- -->
+        <div class="reveal mt-4" id="find">
+          <h3 class="h4"><code>find</code> — locate files by name</h3>
+          <p>Where <code>grep</code> searches <em>inside</em> files, <code>find</code> searches <em>for</em> files. Give it a starting folder and a name pattern.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — find</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>find ~/Documents -name "*.pdf"</span><span class="output">/home/alex/Documents/invoice-2024.pdf</span><span class="output">/home/alex/Documents/contracts/nda.pdf</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- sudo ---- -->
+        <div class="reveal mt-4" id="sudo">
+          <h3 class="h4"><code>sudo</code> — do it as administrator</h3>
+          <p>Stands for <b>superuser do</b>: run one command with admin (root) powers. It will ask for <em>your</em> password.
+          You'll need it for installing software and changing system settings — more in <a href="users-and-permissions.html">Users &amp; Permissions</a>.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — sudo</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>sudo apt update</span><span class="output">[sudo] password for alex:</span><span class="comment"># note: the password stays INVISIBLE while you type — that's normal!</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- chmod ---- -->
+        <div class="reveal mt-4" id="chmod">
+          <h3 class="h4"><code>chmod</code> — change permissions</h3>
+          <p>Controls who can <b>r</b>ead, <b>w</b>rite or e<b>x</b>ecute a file. The classic use: making a script runnable.
+          The full system is explained in <a href="users-and-permissions.html">Users &amp; Permissions</a>.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — chmod</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>chmod +x backup.sh</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>chmod 755 run-me.sh</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ---- man ---- -->
+        <div class="reveal mt-4" id="man">
+          <h3 class="h4"><code>man</code> — the built-in manual</h3>
+          <p>Every command ships with its own documentation. This is the most meta command of all: when in doubt, ask the manual. Press <code>q</code> to exit.</p>
+          <div class="terminal-block">
+            <div class="terminal-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">bash — man</span>
+              <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+            </div>
+            <pre class="terminal-body"><code><span class="cmdline"><span class="prompt">alex@pc:~$</span>man ls</span><span class="cmdline"><span class="prompt">alex@pc:~$</span>man grep</span></code></pre>
+          </div>
+          <div class="callout purple"><i class="bi bi-book"></i>
+            <span><b>Shorter alternative:</b> most commands answer to <code>--help</code>, e.g. <code>ls --help</code>,
+            for a quick one-page summary instead of the full manual.</span>
+          </div>
+        </div>
+
+        <!-- Practice everything above in the live embedded sandbox -->
+        <div class="callout mt-4"><i class="bi bi-joystick"></i>
+          <span><b>Try all of this right now — no Linux required.</b> Every command on this page works in the
+          <a href="practice.html">live Practice Terminal</a>: a sandbox built into this site, running entirely
+          in your browser. Copy a command, paste it there, and see the output for yourself.</span>
+        </div>
+      </section>
+
+      <!-- ===== Mark as completed ===== -->
+      <div class="complete-box reveal">
+        <div>
+          <h5>Finished this topic?</h5>
+          <p>Saved locally in your browser — no account needed.</p>
+        </div>
+        <button class="ylg-complete-btn" data-topic="terminal-and-shell"><i class="bi bi-circle"></i><span>Mark as Completed</span></button>
+      </div>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="desktop-environments.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Desktop Environments</span></span></a>
+        <a class="pager-link next" href="package-managers.html"><span><span class="dir">next topic</span><span class="lbl">Package Managers <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

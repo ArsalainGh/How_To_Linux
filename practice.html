@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Practice in a REAL Linux terminal embedded in this page — genuine bash and GNU tools from sandbox.bio, sandboxed in your browser. Plus a built-in offline fallback.">
+  <title>Practice Terminal — Your Linux Guide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%234ade80' font-family='monospace'%3E&gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Apply the saved theme BEFORE first paint (prevents a dark/light flash) -->
+  <script>(function(){try{var t=localStorage.getItem("ylg-theme")||"dark",d=document.documentElement;d.setAttribute("data-theme",t);d.setAttribute("data-bs-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+</head>
+<body>
+
+  <!-- ===================== Navbar (shared) ===================== -->
+  <nav class="navbar navbar-expand-lg ylg-navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand ylg-brand" href="index.html"><i class="bi bi-terminal-fill"></i><span>YourLinuxGuide</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Topics</a>
+            <ul class="dropdown-menu ylg-dropdown">
+              <li><a class="dropdown-item" href="what-is-linux.html"><i class="bi bi-lightbulb"></i> What Is Linux?</a></li>
+              <li><a class="dropdown-item" href="distributions.html"><i class="bi bi-diagram-3"></i> Distributions</a></li>
+              <li><a class="dropdown-item" href="desktop-environments.html"><i class="bi bi-display"></i> Desktop Environments</a></li>
+              <li><a class="dropdown-item" href="terminal-and-shell.html"><i class="bi bi-terminal"></i> Terminal &amp; Shell</a></li>
+              <li><a class="dropdown-item" href="package-managers.html"><i class="bi bi-box-seam"></i> Package Managers</a></li>
+              <li><a class="dropdown-item" href="file-system.html"><i class="bi bi-folder2-open"></i> The File System</a></li>
+              <li><a class="dropdown-item" href="users-and-permissions.html"><i class="bi bi-shield-lock"></i> Users &amp; Permissions</a></li>
+              <li><a class="dropdown-item" href="essential-concepts.html"><i class="bi bi-cpu"></i> Essential Concepts</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="getting-started.html"><i class="bi bi-rocket-takeoff"></i> Getting Started</a></li>
+              <li><a class="dropdown-item" href="cheat-sheet.html"><i class="bi bi-journal-text"></i> Cheat Sheet</a></li>
+              <li><a class="dropdown-item" href="Resources.html"><i class="bi bi-journal-text"></i> Resources </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="practice.html"><i class="bi bi-play-circle"></i> Practice Terminal <span class="flag-chip green ms-1">live</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="practice.html">Practice</a></li>
+          <li class="nav-item"><a class="nav-link" href="cheat-sheet.html">Cheat Sheet</a></li>
+          <!-- Dark/light theme switch (main.js syncs the icon + label) -->
+          <li class="nav-item d-flex align-items-lg-center ms-lg-2 mt-2 mt-lg-0">
+            <button id="themeToggle" class="ylg-theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle color theme"><i class="bi bi-sun"></i></button>
+          </li>
+          <li class="nav-item">
+            <div class="ylg-search">
+              <i class="bi bi-search"></i>
+              <input id="navSearch" type="search" class="form-control" placeholder="Search topics…" aria-label="Search topics" autocomplete="off">
+              <div id="navSearchResults" class="ylg-search-results"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ylg-main">
+    <div class="container">
+
+      <nav aria-label="breadcrumb" class="ylg-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Practice Terminal</li>
+        </ol>
+      </nav>
+
+      <header class="mb-4 reveal">
+        <span class="kicker">practice/live-terminal</span>
+        <h1 class="display-5 fw-bold">Practice <span class="gradient-text">Terminal</span></h1>
+        <p class="section-lead mt-2">A <b>real Linux terminal, embedded right here</b> — genuine <code>bash</code>, real GNU
+        tools, provided by the free <a href="https://sandbox.bio/" target="_blank" rel="noopener noreferrer">sandbox.bio</a>
+        project and sandboxed inside your browser tab. Nothing to install, <em>nothing you can break</em>. Hit
+        <b>Launch terminal</b> and watch a real shell boot inside the page.</p>
+      </header>
+
+      <!-- ===== The live terminal: sandbox.bio (a REAL Linux shell) ===== -->
+      <section class="section pt-0" aria-labelledby="liveTerm">
+        <h2 class="visually-hidden" id="liveTerm">Live terminal sandbox</h2>
+
+        <!-- The real terminal, embedded IN this panel via sandbox.bio's official
+             /embed endpoint (embedding is a documented sandbox.bio feature:
+             https://sandbox.bio/training/embed).
+             Two hard-won details encoded here:
+             1. The iframe stays VISIBLE while loading (never display:none, never
+                loading="lazy") — hidden lazy iframes are never fetched at all.
+                Placeholder + spinner are overlays ON TOP of it instead.
+             2. The embed page renders its own 40px "sandbox.bio terminal" header
+                bar at the top of the frame. It's cross-origin, so it can't be
+                removed from the DOM — instead the iframe is positioned 40px above
+                the panel's visible area (see #sbFrame in styles.css), clipping
+                the bar out of sight so only the terminal shows. -->
+        <div class="practice-embed reveal" id="sbEmbed">
+          <div class="terminal-header practice-embed-header">
+            <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+            <span class="terminal-title">sandbox.bio — real Linux terminal</span>
+            <div class="practice-embed-actions">
+              <span class="copy-btn sb-chip" id="sbChip"><i class="bi bi-power"></i><span>off</span></span>
+              <button id="sbReset" class="copy-btn" type="button" title="Reload the terminal — completely fresh system" disabled><i class="bi bi-arrow-clockwise"></i><span>Reset</span></button>
+              <button id="sbFullscreen" class="copy-btn" type="button" title="Toggle fullscreen" disabled><i class="bi bi-arrows-fullscreen"></i><span>Fullscreen</span></button>
+              <a class="copy-btn" href="https://sandbox.bio/playgrounds/terminal" target="_blank" rel="noopener noreferrer" title="Open the terminal playground on sandbox.bio"><i class="bi bi-box-arrow-up-right"></i><span>New tab</span></a>
+            </div>
+          </div>
+
+          <div class="practice-embed-body" id="sbBody">
+            <!-- The terminal frame. src is set when you press Launch. -->
+            <iframe id="sbFrame"
+                    title="sandbox.bio — real Linux terminal running in your browser"
+                    data-src="https://sandbox.bio/embed?cwd=your-linux-guide"
+                    allow="cross-origin-isolated"></iframe>
+
+            <!-- Overlay 1: click-to-load placeholder -->
+            <div class="practice-placeholder" id="sbPlaceholder">
+              <div class="ph-prompt"><span class="prompt">you@browser:~$</span> <span class="ph-cmd">launch --real-linux</span><span class="cursor"></span></div>
+              <p class="ph-text">A <b>genuine Linux shell</b> — real <code>bash</code> and GNU tools compiled to
+              WebAssembly by the free <b>sandbox.bio</b> project — runs right here, inside this panel.</p>
+              <button id="sbLaunch" class="btn btn-ylg btn-lg" type="button">
+                <i class="bi bi-play-fill"></i> Launch terminal
+              </button>
+              <p class="ph-hint"><i class="bi bi-shield-check"></i> Sandboxed in this tab — your real files are never touched. Reset gives you a fresh system.</p>
+            </div>
+
+            <!-- Overlay 2: boot spinner (between Launch and the shell's "ready" signal) -->
+            <div class="practice-loading d-none" id="sbLoading">
+              <div class="spinner-border" role="status" aria-hidden="true"></div>
+              <span>Booting real Linux… first load fetches a few MB.</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="practice-credit text-muted-custom small mt-2 mb-0">
+          <i class="bi bi-info-circle"></i> Powered by
+          <a href="https://sandbox.bio/" target="_blank" rel="noopener noreferrer">sandbox.bio</a> — a free, open
+          education project whose terminal is <a href="https://sandbox.bio/training/embed" target="_blank"
+          rel="noopener noreferrer">built to be embedded</a>. The <b>Run</b> buttons below type their commands
+          straight into this terminal.
+        </p>
+
+        <!-- Built-in offline fallback: the site's own simulator (terminal.js) -->
+        <details class="practice-fallback reveal mt-4" id="builtinDetails">
+          <summary><i class="bi bi-hdd"></i> Prefer the built-in terminal? (works offline, no third party)</summary>
+          <p class="text-muted-custom small mt-2 mb-2">This one is part of the site itself — a friendly simulator with
+          ~30 commands, pipes, Tab completion and history. Type <code>help</code> to see everything it understands.</p>
+
+          <div class="practice-embed" id="builtinEmbed">
+            <div class="terminal-header practice-embed-header">
+              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+              <span class="terminal-title">user@ylg — bash — built-in simulator</span>
+              <div class="practice-embed-actions">
+                <button id="termReset" class="copy-btn" type="button" title="Restore the file system to a clean state"><i class="bi bi-arrow-clockwise"></i><span>Reset</span></button>
+                <button id="termFullscreen" class="copy-btn" type="button" title="Toggle fullscreen"><i class="bi bi-arrows-fullscreen"></i><span>Fullscreen</span></button>
+              </div>
+            </div>
+            <div class="practice-embed-body ylg-term" id="ylgTermBody">
+              <div id="ylgTermOut" class="ylg-term-out" aria-live="polite"></div>
+              <div class="ylg-term-line">
+                <span id="ylgTermPrompt" class="ylg-term-prompt"></span>
+                <input id="ylgTermInput" class="ylg-term-input" type="text"
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                       aria-label="Terminal command input" placeholder="type a command — try: help">
+              </div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+
+
+      <!-- ===== Warm-up ideas ===== -->
+      <section class="section" aria-labelledby="warmups">
+        <h2 class="section-title" id="warmups">Not sure what to type? Warm up with these</h2>
+        <p class="section-lead">Every block has a <b>Run</b> button that types the commands straight into the real
+        terminal above (launching it first if needed) — or use <b>Copy</b> and paste them yourself. They map
+        directly to the <a href="terminal-and-shell.html">Terminal &amp; Shell</a> and
+        <a href="file-system.html">File System</a> topics.</p>
+
+        <div class="row g-4 mt-1">
+          <div class="col-lg-6 reveal">
+            <div class="terminal-block">
+              <div class="terminal-header">
+                <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+                <span class="terminal-title">warm-up — look around</span>
+                <button class="run-btn copy-btn" data-run title="Run these in the terminal above"><i class="bi bi-play-fill"></i><span>Run</span></button>
+                <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+              </div>
+              <pre class="terminal-body"><code><span class="comment"># Who am I, where am I, what's here?</span><span class="cmdline"><span class="prompt">$</span>whoami</span><span class="cmdline"><span class="prompt">$</span>pwd</span><span class="cmdline"><span class="prompt">$</span>ls -la</span><span class="cmdline"><span class="prompt">$</span>uname -a</span></code></pre>
+            </div>
+          </div>
+
+          <div class="col-lg-6 reveal d1">
+            <div class="terminal-block">
+              <div class="terminal-header">
+                <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+                <span class="terminal-title">warm-up — build something</span>
+                <button class="run-btn copy-btn" data-run title="Run these in the terminal above"><i class="bi bi-play-fill"></i><span>Run</span></button>
+                <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+              </div>
+              <pre class="terminal-body"><code><span class="comment"># Create, write, inspect, clean up</span><span class="cmdline"><span class="prompt">$</span>mkdir -p projects/hello</span><span class="cmdline"><span class="prompt">$</span>echo "my first file" &gt; projects/hello/note.txt</span><span class="cmdline"><span class="prompt">$</span>ls -R projects</span><span class="cmdline"><span class="prompt">$</span>cat projects/hello/note.txt</span></code></pre>
+            </div>
+          </div>
+
+          <div class="col-lg-6 reveal">
+            <div class="terminal-block">
+              <div class="terminal-header">
+                <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+                <span class="terminal-title">warm-up — pipes &amp; power</span>
+                <button class="run-btn copy-btn" data-run title="Run these in the terminal above"><i class="bi bi-play-fill"></i><span>Run</span></button>
+                <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+              </div>
+              <pre class="terminal-body"><code><span class="comment"># Chain commands like a pro</span><span class="cmdline"><span class="prompt">$</span>printf "coffee\nmilk\ncoffee\nbread\ncoffee\n" &gt; list.txt</span><span class="cmdline"><span class="prompt">$</span>sort list.txt | uniq -c | sort -rn</span><span class="cmdline"><span class="prompt">$</span>grep -c coffee list.txt</span></code></pre>
+            </div>
+          </div>
+
+          <div class="col-lg-6 reveal d1">
+            <div class="terminal-block">
+              <div class="terminal-header">
+                <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
+                <span class="terminal-title">warm-up — the forbidden one</span>
+                <button class="copy-btn" data-copy><i class="bi bi-clipboard"></i><span>Copy</span></button>
+              </div>
+              <pre class="terminal-body"><code><span class="comment"># NEVER run this on a real machine.</span><span class="comment"># Here? It's a sandbox. Type it yourself and see:</span><span class="cmdline"><span class="prompt">$</span>rm -rf / 2&gt;/dev/null; ls /</span><span class="comment"># ...then hit Reset above for a fresh system.</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout mt-4"><i class="bi bi-lightbulb"></i>
+          <span><b>Good to know:</b> the embedded terminal runs real GNU tools in your browser, but it's still a
+          sandbox — no package installs with <code>apt</code>, no hardware, and Reset wipes your files. Perfect for
+          practicing commands; when you're ready for the full experience, head to
+          <a href="getting-started.html">Getting Started</a>.</span>
+        </div>
+      </section>
+
+      <!-- ===== Pager ===== -->
+      <nav class="pager d-flex" aria-label="Topic navigation">
+        <a class="pager-link" href="cheat-sheet.html"><span><span class="dir">previous</span><span class="lbl"><i class="bi bi-arrow-left"></i> Cheat Sheet</span></span></a>
+        <a class="pager-link next" href="getting-started.html"><span><span class="dir">install for real</span><span class="lbl">Getting Started <i class="bi bi-arrow-right"></i></span></span></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="ylg-footer mt-5">
+    <div class="container py-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="text-center text-md-start">
+        <span class="brand"><i class="bi bi-terminal-fill"></i> YourLinuxGuide</span>
+        <div class="mt-1">From zero to <code>sudo</code> — one topic at a time.</div>
+      </div>
+      <div class="text-center text-md-end">
+        <div>Built with HTML, CSS, Bootstrap 5 &amp; vanilla JavaScript.</div>
+        <div class="mt-1">&copy; <span class="js-year">2025</span> Your Linux Guide · Free and open, like the OS it teaches.</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="ylg-backtop" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+  <script src="terminal.js"></script>
+</body>
+</html>
